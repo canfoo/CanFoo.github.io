@@ -1,0 +1,752 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="作用域
+
+全局作用域与私有作用域
+
+JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。
+函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。
+
+
+作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="作用域与闭包">
+<meta property="og:url" content="http://yoursite.com/2014/09/20/作用域与闭包/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="作用域
+
+全局作用域与私有作用域
+
+JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。
+函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。
+
+
+作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，">
+<meta property="og:updated_time" content="2016-04-20T04:34:46.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="作用域与闭包">
+<meta name="twitter:description" content="作用域
+
+全局作用域与私有作用域
+
+JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。
+函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。
+
+
+作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 作用域与闭包 | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                作用域与闭包
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-09-20T12:02:23+08:00" content="2014-09-20">
+              2014-09-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><hr>
+<ul>
+<li><p>全局作用域与私有作用域</p>
+<ol>
+<li>JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。</li>
+<li>函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。</li>
+</ol>
+</li>
+<li><p>作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，如果是私有的，那么我们接下来的所有操作都是用的自己私有的，和外面的没有任何的关系；如果不是自己私有的，则去当前作用域的上一级作用域中查找，如果上一级有，那么接下来操作的，都是操作上级作用域的变量；如果上级也没有，则继续向上查找，一直找到window为止。</p>
+<a id="more"></a>
+<p>###注意：如果在window还没有找到，如果是 变量=值 相当于给window下增加一个属性名（变量）和属性值（值），如果是console.log(变量)，则报错。</p>
+<pre><code>var a;
+function fn(){
+    b=10; //不会报错，得到window.b = 10;
+}
+/*******************************************/
+
+var a=10;
+fn();
+function fn(){
+    console.log(b);  //报错，b未定义
+    /*以下代码不会执行了*/
+    b=10;
+    console.log(a);  
+}
+</code></pre></li>
+<li><p>如何判断变量是否为私有的：符合以下两个条件之一，变量就是私有作用域的。</p>
+<ol>
+<li>看变量是否为形参</li>
+<li>看是都在私有作用域声明过（是否有var关键字）</li>
+</ol>
+</li>
+<li><p>公有作用域与私有作用域关系</p>
+<pre><code>var num = 10;
+function fn1(){
+    console.log(num);
+}
+fn1(); //输出10；
+/******************************/
+
+function fn2(){
+    console.log(num);
+    var num = 10;
+
+}
+fn1(); //输出undefined；
+/*如果当前作用域有声明变量，则这个变量与它所有上级作用域无关； 
+如果当前作用域有声明变量,则往上级寻找变量声明，直到找到为止就停止，如果没找到，浏览器就报错。*/
+/******************************/
+
+console.log(str, num);   //undefined,,undefined
+var str =&quot;danny&quot;;
+var num = 33;
+function fn(){
+    console.log(str, num);  //danny,undefined
+    num = 22;
+    str = &quot;tom&quot;;
+    var num = 10;
+    console.log(str, num);  //tom,10
+}
+fn();
+console.log(str, num);   //tom, 33
+</code></pre></li>
+</ul>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><hr>
+<p>当函数执行的时候，会产生一个私有作用域，这个私有作用域成为闭包，闭包是方法运行的一种机制，可以保护变量或方法不受污染。</p>
+<ul>
+<li><p>自执行函数</p>
+<pre><code> for(var i=0; i&lt;10 ;i++){
+     var a = 8;
+ }
+ console.log(i); //i存在，等于10；
+ console.log(a); //输出8
+ /*在js中，没有块级作用域的概念，因此可以输出i和a*/
+ /*****************************************/
+
+~(function fn(){
+     for(var i=0; i&lt;10 ;i++){
+         var a = 8;
+     }
+ })()
+ console.log(i); //报错
+ console.log(a); //报错
+ /*fn是闭包，在js中，没有块级作用域的概念，可以通过闭包来模拟块作用域。*/
+</code></pre></li>
+<li>方法能够访问上级作用域中的变量和函数，这个方法就是闭包的一种<pre><code>function A(){
+    fuction B(){}
+    return function C(){}
+}
+/*B和C都是闭包*/
+</code></pre></li>
+</ul>
+<h1 id="作用域的销毁"><a href="#作用域的销毁" class="headerlink" title="作用域的销毁"></a>作用域的销毁</h1><hr>
+<p>全局作用下定义的变量或者对象是不销毁的，关闭浏览器的时候可以被销毁，也可以人为销毁变量（利用浏览器的垃圾回收机制<code>var obj={xx}; obj=null;</code>//解除引用，obj指向的全局对象便会释放掉，obj变等浏览器会通过回收机制去检测找到后才可以销毁）。</p>
+<ul>
+<li><p>堆内存释放：定义一个引用数据类型值就会产生一个堆内存块,如果外面有一个变量存储了这个地址，我们就说当前的堆内存被占用了，也就不能销毁了；如果让变量的值等于null，之前被占用的堆内存现在没有人占用了，浏览器会在空闲的时候把这个堆内存清理掉。</p>
+<pre><code>/*定义一个引用数据类型值就会产生一个堆内存块*/
+var obj = {name: &quot;a&quot;}; //产生一个堆内存块xx
+obj = null; /*null是一个空指针,则xx内存块没有被别人占用，所以浏览器会在空闲的时候将xx内存
+块给释放掉*/
+</code></pre></li>
+<li><p>栈内存释放</p>
+<ol>
+<li>全局作用域：不销毁的作用域，打开页面的时候形参，只有关掉的页面才会销毁；</li>
+<li>私有作用域：函数执行就会形成一个私有作用域，私有作用域的销毁情况如下；</li>
+</ol>
+</li>
+<li>私有作用域销毁情况：<ol>
+<li>立即销毁：一般情况下，函数执行一次就会形成一个私有的作用域，接下来开始形参赋值、预解释、代码执行…，当代码执行完成后，我们当前函数执行的目的已经达到了，A也没有用了，浏览器为了节省内存空间，会自动把A释放掉。</li>
+<li>不销毁：方法内部的内容被外部环境的变量或者方法所占有，这样这个方法就释放不了了。一般表现形式：一个函数返回一个引用数据类型，并且将这个引用数据类型赋给外部的全局变量。</li>
+</ol>
+</li>
+<li><pre><code>functon fn(){
+    var num = 10;
+    return function(){
+        num++;
+        console.log(num);
+    }
+}
+var f = fn();
+fn();  //11
+fn();  //12
+fn();  //13
+/*全局变量f绑定了fn的返回方法，因此fn方法不能被销毁*/
+/***************************************/
+
+/*-------------------------------------*/
+
+/*利用闭包实现每次点击，i进行累加,oDiv为div元素*/
+
+//方法一：
+...
+oDiv.onclick = (function(){
+    var i=0;
+    return function(){
+        oDiv.innerHTML = ++i;
+    }
+})()
+//方法二：
+~(function(){
+    var i=0;
+    oDiv.onclick = function(){
+        oDiv.innerHTML = ++i;
+    }
+})()
+/*-------------------------------------*/
+//方法三：    
+oDiv.onclick = (function(){
+    var i=0;
+    return function(){
+     /*   fn(i); //实现不了累加，因为fn只对形参进行累加，
+                 //所以i每次初始值都是为0，需要把fn里面的i
+                 //的累加值赋值给上面的i值，才可以实现。*/
+
+          i=fn(i);
+    }
+})()
+
+function fn(i){
+    oDiv.innerHTML = ++i;
+    return i;
+}
+/*-------------------------------------*/
+//方法四：
+oDiv.onclick = function{
+    oDiv.innerHTML ++;
+}    
+/*-------------------------------------*/
+//方法五：
+oDiv.count = 0;
+oDiv.onclick = function{
+    oDiv.innerHTML = ++this.count;
+}    
+</code></pre></li>
+<li><p>不立即销毁：fn方法返回的引用地址并没有被其他作用域占有，按理说应该销毁，但是后面有让这个返回的方法运行，所以fn暂时不能销毁，得让返回的匿名方法运行完了之后fn才被销毁。</p>
+<pre><code>functon fn(){
+    var num = 10;
+    return function(){
+        num++;
+        console.log(num);
+    }
+}
+f()();
+/*f()()需要等待返回方法执行完后才可以销毁fn()*/
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/09/19/预解释/" rel="next" title="预解释">
+                <i class="fa fa-chevron-left"></i> 预解释
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/09/22/THIS关键字总结/" rel="prev" title="THIS关键字总结">
+                THIS关键字总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#作用域"><span class="nav-number">1.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#闭包"><span class="nav-number">2.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#作用域的销毁"><span class="nav-number">3.</span> <span class="nav-text">作用域的销毁</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="预解释预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。
+
+声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined
+定义：给变量赋值（eg num=10;）
+
+
+在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="预解释">
+<meta property="og:url" content="http://yoursite.com/2014/09/19/预解释/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="预解释预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。
+
+声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined
+定义：给变量赋值（eg num=10;）
+
+
+在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会">
+<meta property="og:updated_time" content="2016-04-21T15:57:53.857Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="预解释">
+<meta name="twitter:description" content="预解释预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。
+
+声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined
+定义：给变量赋值（eg num=10;）
+
+
+在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 预解释 | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                预解释
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-09-19T15:22:43+08:00" content="2014-09-19">
+              2014-09-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="预解释"><a href="#预解释" class="headerlink" title="预解释"></a>预解释</h2><p>预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。</p>
+<ol>
+<li>声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined</li>
+<li>定义：给变量赋值（eg num=10;）</li>
+</ol>
+<ul>
+<li>在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会定义赋值<a id="more"></a>
+<pre><code>console.log(num); //undefined
+var num = 10;
+console.log(num); //10
+</code></pre></li>
+<li>在预解释阶段，带function关键字的声明+定义两部分都完成了<pre><code>console.log(fn); //function fn(){console.log(&quot;ok&quot;);}
+function fn(){
+    console.log(&quot;ok&quot;);
+}
+</code></pre>  注意：函数执行的步骤：<ol>
+<li>首先给函数的形参进行赋值</li>
+<li>对var和function进行预解释</li>
+<li>私有作用域中的代码从上到下执行<p></p></li>
+</ol>
+</li>
+<li>预解释时遇到重复变量名会忽略掉声明 <pre><code>var a=12; //预解释a,即在内存中声明a
+var a;    //重复用var声明变量名了，忽略掉本次a的预解释声明
+var a=15; //同时，忽略本次a的预解释声明
+/*由于预解释是发生在代码运行之前的，因此代码执行的时候会已经声明的变量名根据式子进行
+相应的复制，所以最后a复制为15*/
+console.log(a); //输出15
+</code></pre></li>
+<li><p>重名变量带初始值（相当于做了赋值表达式的运算）:<br>在预解释阶段，如果变量或者函数名已经声明过了，那么不会重新的进行声明，但是在预解释阶段，需要重新的赋值。</p>
+<pre><code>console.log(b);                --1   //输出&quot;function b(){ console.log(&quot;hello&quot;) }&quot;
+var b=10;                      --2
+function b(){                  --3
+    console.log(&quot;hello&quot;);      --4
+}
+console.log(b);                     //输出10
+/*浏览器在执行代码前先找到var关键字进行预解释，因此浏览器会对2，3的变量进行预解释，但是
+第3行的变量名与第2行的变量名重名了，所以第3行的变量名忽略声明，但是由于第3行为function，
+因此预解释第3行的时候，虽然忽略掉变量声明，但是会进行赋值操作，所以变量b此时被赋值为方法b。
+因此代码执行到1的时候，输出方法b，执行到2的时候，b进行赋值的操作，此时b值为2，所以执行到4
+的时候，输出10*/
+/*********************************************************/
+
+fn();       // 2
+function fn(){console.log(1);}
+fn();       // 2
+var fn = 13;
+fn();       //报错，代码停止
+function fn(){console.log(2);}
+fn();
+/*在全局作用域下声明的变量或者函数相当于给window增加了一个属性名，由于JS中规定一个对象的属
+性名是不能重复，所以函数名字如果和变量的名字一样，也算是冲突。*/
+</code></pre></li>
+<li><p>function不预解释的情况（函数作为一个值得时候）：<br>“=”是赋值操作，等号左边是变量，右边是常量（值），所以预解释的只对等号左边的变量进行预解释，不管右边的值    </p>
+<pre><code>f(); //报错
+var f = function(){console.log(&quot;hello&quot;)};
+/*函数表达式*/
+/******************************/
+
+sum(); //报错
+(function sum(){console.log(&quot;hello&quot;)})()    //一般不写函数名，去掉sum()
+/*自执行函数*/
+/******************************/
+
+function  fn(){
+    console.log(sum);  //报错
+    return functon sum(){};
+}
+/******************************/
+
+var num = 20;
+function  fn(){
+    console.log(num);
+    return function sum(){};
+    var num=10;
+}
+fn();//输出undefined;
+/*在私有作用域中，虽热return下面代码不执行了，但是要进行预解释*/
+</code></pre></li>
+</ul>
+<h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><pre><code>if(!(&quot;a&quot; in window)){   //判断a是否属于window的属性
+    var a = &quot;hello&quot;;
+}
+console.log(a); //输出undefined；
+/*只要定义在全局下的变量，就属于window的属性*/
+
+/**************************************************/
+
+fn();  //输出hello
+if(1==0){
+    function fn(){console.log(&quot;hello&quot;)}
+}
+/*fn已经预解释了，所以输出hello*/
+</code></pre>
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/09/20/作用域与闭包/" rel="prev" title="作用域与闭包">
+                作用域与闭包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#预解释"><span class="nav-number">1.</span> <span class="nav-text">预解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习题"><span class="nav-number">2.</span> <span class="nav-text">练习题</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

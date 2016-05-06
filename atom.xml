@@ -1,0 +1,2219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Can&#39;s blog</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-05-05T00:11:11.743Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Can</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gulp构建工具</title>
+    <link href="http://yoursite.com/2015/07/26/gulp%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/"/>
+    <id>http://yoursite.com/2015/07/26/gulp构建工具/</id>
+    <published>2015-07-26T04:10:55.000Z</published>
+    <updated>2016-05-05T00:11:11.743Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;gulp介绍&quot;&gt;&lt;a href=&quot;#gulp介绍&quot; class=&quot;headerlink&quot; title=&quot;gulp介绍&quot;&gt;&lt;/a&gt;gulp介绍&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;什么是gulp&lt;br&gt;Gulp是可以自动化执行任务的工具。在平时开发的流程里面，一定有一些动作需要手工的重复的去执行，比如:&lt;ul&gt;
+&lt;li&gt;把一个文件拷贝到另外一个位置&lt;/li&gt;
+&lt;li&gt;把多个 JS 或者 CSS 文件合并成一个文件,以减少网络请求数&lt;/li&gt;
+&lt;li&gt;对JS文件和CSS进行合并压缩,以减少网络流量&lt;/li&gt;
+&lt;li&gt;把Sass或者Less文件编译成CSS&lt;/li&gt;
+&lt;li&gt;压缩图像文件,以减少网络流量&lt;/li&gt;
+&lt;li&gt;创建一个可以实时刷新页面内容的本地服务器等等。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;全局安装gulp&lt;pre&gt;&lt;code&gt;npm install -g gulp
+&lt;/code&gt;&lt;/pre&gt;安装完成后可以输入 &lt;code&gt;gulp --help&lt;/code&gt;&lt;br&gt;如果输出一些帮助的信息就表示可以gulp命令行成功安装了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;gulp基础操作&quot;&gt;&lt;a href=&quot;#gulp基础操作&quot; class=&quot;headerlink&quot; title=&quot;gulp基础操作&quot;&gt;&lt;/a&gt;gulp基础操作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;工作流程&lt;br&gt;gulp的使用流程一般是：首先通过gulp.src()方法获取到想要处理的文件流，&lt;br&gt;然后把文件流通过pipe方法导入到gulp的插件中，&lt;br&gt;最后把经过插件处理后的流再通过pipe方法导入到gulp.dest()中，&lt;br&gt;gulp.dest()方法则把流中的内容写入到文件中。例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+gulp.src(&amp;apos;script/src.js&amp;apos;)         // 获取文件的流的api
+.pipe(gulp.dest(&amp;apos;dist/dest.js&amp;apos;)); // 写文件的api
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp.src()&lt;br&gt;在Gulp中，使用的是Nodejs中的stream(流)，首先获取到需要的stream，然后可以通过stream的pipe()方法把流导入到你想要的地方，比如Gulp的插件中，经过插件处理后的流又可以继续导入到其他插件中，当然也可以把流写入到文件中。所以Gulp是以stream为媒介的，它不需要频繁的生成临时文件，这也是Gulp的速度比Grunt快的一个原因。再回到正题上来，gulp.src()方法正是用来获取流的，但要注意这个流里的内容不是原始的文件流，而是一个虚拟文件对象流(Vinyl files)，这个虚拟文件对象中存储着原始文件的路径、文件名、内容等信息。其语法为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gulp.src(globs[, options]) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;globs参数是文件匹配模式(类似正则表达式)，用来匹配文件路径(包括文件名)，当然这里也可以直接指定某个具体的文件路径。当有多个匹配模式时，该参数可以为一个数组。&lt;br&gt;options为可选参数。通常情况下我们不需要用到&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;glob语法&lt;br&gt;  gulp内部使用了node-glob模块来实现其文件匹配功能。我们可以使用下面这些特殊的字符来匹配我们想要的文件：&lt;br&gt;  匹配符    说明&lt;br&gt;  &lt;code&gt;*&lt;/code&gt;     匹配文件路径中的0个或多个字符，但不会匹配路径分隔符，除非路径分隔符出现在末尾&lt;br&gt;  &lt;code&gt;**&lt;/code&gt;    匹配路径中的0个或多个目录及其子目录,需要单独出现，即它左右不能有其他东西了。如果出现在末尾，也能匹配文件。&lt;br&gt;  &lt;code&gt;?&lt;/code&gt;        匹配文件路径中的一个字符(不会匹配路径分隔符)&lt;br&gt;  &lt;code&gt;[...]&lt;/code&gt;    匹配方括号中出现的字符中的任意一个，当方括号中第一个字符为^或!时，则表示不匹配方括号中出现的其他字符中的任意一个，类似js正则表达式中的用法&lt;br&gt;  !(pattern|pattern|pattern)    匹配任何与括号中给定的任一模式都不匹配的&lt;br&gt;  ?(pattern|pattern|pattern)    匹配括号中给定的任一模式0次或1次，类似于js正则中的(pattern|pattern|pattern)?&lt;br&gt;  +(pattern|pattern|pattern)    匹配括号中给定的任一模式至少1次，类似于js正则中的(pattern|pattern|pattern)+&lt;br&gt;  &lt;em&gt;(pattern|pattern|pattern)    匹配括号中给定的任一模式0次或多次，类似于js正则中的(pattern|pattern|pattern)&lt;/em&gt;&lt;br&gt;  @(pattern|pattern|pattern)    匹配括号中给定的任一模式1次，类似于js正则中的(pattern|pattern|pattern)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp.dest()&lt;br&gt;&lt;code&gt;gulp.dest()&lt;/code&gt;方法是用来写文件的，其语法为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gulp.dest(path[,options]) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;path为写入文件的路径&lt;br&gt;options为一个可选的参数对象，通常我们不需要用到&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp.task()&lt;br&gt;&lt;code&gt;gulp.task()&lt;/code&gt;方法用来定义任务，其语法为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gulp.task(name[, deps], fn) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;name 为任务名&lt;br&gt;deps 是当前定义的任务需要依赖的其他任务，为一个数组。当前定义的任务会在所有依赖的任务执行完毕后才开始执行。如果没有依赖，则可省略这个参数&lt;br&gt;fn 为任务函数，我们把任务要执行的代码都写在里面。该参数也是可选的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gulp中执行多个任务，可以通过任务依赖来实现。例如我想要执行one,two,three这三个任务，那我们就可以定义一个空的任务，然后把那三个任务当做这个空的任务的依赖就行了：&lt;pre&gt;&lt;code&gt;gulp.task(&amp;apos;mytask&amp;apos;, [&amp;apos;array&amp;apos;, &amp;apos;of&amp;apos;, &amp;apos;task&amp;apos;, &amp;apos;names&amp;apos;], function() { //定义一个有依赖的任务
+// Do something
+}); 
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp.watch()&lt;br&gt;&lt;code&gt;gulp.watch()&lt;/code&gt;用来监视文件的变化，当文件发生变化后，我们可以利用它来执行相应的任务，例如文件压缩等。其语法为&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gulp.watch(glob[, opts], tasks) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;glob 为要监视的文件匹配模式，规则和用法与&lt;code&gt;gulp.src()&lt;/code&gt;方法中的 glob 相同。&lt;br&gt;opts 为一个可选的配置对象，通常不需要用到&lt;br&gt;tasks 为文件变化后要执行的任务，为一个数组&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;gulp基础应用&quot;&gt;&lt;a href=&quot;#gulp基础应用&quot; class=&quot;headerlink&quot; title=&quot;gulp基础应用&quot;&gt;&lt;/a&gt;gulp基础应用&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;复制单个文件&lt;br&gt;   创建APP目录，在APP目录新建一个index.html文件和一个dist文件夹。在命令行执行&lt;code&gt;gulp copy-html&lt;/code&gt;    ，就可以将index.html文件复制到dist文件夹内。gulpfile.js代码如下：&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+ gulp.task(&amp;apos;copy-html&amp;apos;,function(){
+     return gulp.src(&amp;apos;app/index.html&amp;apos;).pipe(gulp.dest(&amp;apos;dist&amp;apos;));
+ });
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;gulp插件&quot;&gt;&lt;a href=&quot;#gulp插件&quot; class=&quot;headerlink&quot; title=&quot;gulp插件&quot;&gt;&lt;/a&gt;gulp插件&lt;/h2&gt;&lt;p&gt;gulp提供了一些很实用的接口，但本身并不能做太多的事情。&lt;br&gt;可以读取文件、写入文件以及监控文件等一少部分功能。&lt;br&gt;其它实用的功能都是依靠插件来进行扩展的。&lt;br&gt;这些插件可以实现比如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- 编译 Sass：gulp-sass
+- 编译 Less：gulp-less
+- 合并文件：gulp-concat
+- 压缩js 文件：gulp-uglify
+- 重命名js文件：gulp-rename
+- 优化图像大小：gulp-imagemin
+- 压缩css 文件：gulp-minify-css
+- 创建本地服务器：gulp-connect
+- 实时预览 gulp-connect
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;编译less文件&lt;br&gt;  less插件可以把less文件编译成css&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;less任务&lt;br&gt;可以在app/less下面创建文件page.less,然后就可以把此文件编译到dist下面&lt;/li&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install gulp-less --save-dev
+&lt;/code&gt;&lt;/pre&gt;安装后可以在node-modules里看到此插件&lt;br&gt;也可以在package.json的devDependencies里面看到此插件的配置&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+var less = require(&amp;apos;gulp-less&amp;apos;);
+
+gulp.task(&amp;apos;less&amp;apos;,function(){
+    return gulp.src(&amp;apos;app/less/*.less&amp;apos;).pipe(less()).pipe(gulp.dest(&amp;apos;dist/css&amp;apos;));
+});
+
+gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;less&amp;apos;]);
+//命令行执行gulp即可
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp-concat：合并JS文件&lt;br&gt;这个插件可以把几个文件合并到一块&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install gulp-concat --save-dev  
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+var concat = require(&amp;apos;gulp-concat&amp;apos;);
+
+gulp.task(&amp;apos;concat&amp;apos;,function(){
+    return gulp.src([&amp;apos;app/js/*.js&amp;apos;,&amp;apos;!app/js/*.tmp.js&amp;apos;])//指定要合并的文件glob
+        .pipe(concat(&amp;apos;app.js&amp;apos;))//进行合并并指定合并后的文件名
+        .pipe(gulp.dest(&amp;apos;dist/js&amp;apos;));//输出到目标路径
+});
+
+gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;concat&amp;apos;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp-uglify：压缩js&lt;br&gt;可以对JS代码进行压缩&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install gulp-uglify --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+var concat = require(&amp;apos;gulp-concat&amp;apos;);
+var uglify = require(&amp;apos;gulp-uglify&amp;apos;)
+
+gulp.task(&amp;apos;uglify&amp;apos;,function(){
+    return gulp.src([&amp;apos;app/js/*.js&amp;apos;,&amp;apos;!app/js/*.tmp.js&amp;apos;])
+        .pipe(concat(&amp;apos;app.js&amp;apos;)) //把多个JS文件合并成一个文件
+        .pipe(uglify()) //对合并后的app.js文件进行压缩
+        .pipe(gulp.dest(&amp;apos;dist/js&amp;apos;)); //输出到目的地
+});
+
+gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;uglify&amp;apos;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;gulp-minify-html：压缩html&lt;br&gt;可以对JS代码进行压缩&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install ggulp-minify-html --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;),
+    minifyHtml = require(&amp;quot;gulp-minify-html&amp;quot;);
+
+gulp.task(&amp;apos;minify-html&amp;apos;, function () {
+    gulp.src(&amp;apos;src/*.html&amp;apos;) // 要压缩的html文件
+    .pipe(minifyHtml())    //压缩
+    .pipe(gulp.dest(&amp;apos;dist/html&amp;apos;));//输出到目的地
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;gulp-minify-css：压缩css&lt;br&gt;可以对JS代码进行压缩&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install gulp-minify-css --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+var less = require(&amp;apos;gulp-less&amp;apos;);
+var minify = require(&amp;apos;gulp-minify-css&amp;apos;);//在文件的顶部去包含这个插件，起个名字，叫做 minify
+var rename = require(&amp;apos;gulp-rename&amp;apos;);
+gulp.task(&amp;apos;minify&amp;apos;,function(){
+    return gulp.src(&amp;apos;app/less/page.less&amp;apos;)//指定 less文件
+        .pipe(less())//把less编译成css
+        .pipe(gulp.dest(&amp;apos;dist/css&amp;apos;))//输出到目的地
+        .pipe(minify())//对 css再进行压缩
+        .pipe(rename(&amp;apos;page.min.css&amp;apos;))//重命名
+        .pipe(gulp.dest(&amp;apos;dist/css&amp;apos;));//输出到目的地
+});
+
+gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;less&amp;apos;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;gulp介绍&quot;&gt;&lt;a href=&quot;#gulp介绍&quot; class=&quot;headerlink&quot; title=&quot;gulp介绍&quot;&gt;&lt;/a&gt;gulp介绍&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;什么是gulp&lt;br&gt;Gulp是可以自动化执行任务的工具。在平时开发的流程里面，一定有一些动作需要手工的重复的去执行，比如:&lt;ul&gt;
+&lt;li&gt;把一个文件拷贝到另外一个位置&lt;/li&gt;
+&lt;li&gt;把多个 JS 或者 CSS 文件合并成一个文件,以减少网络请求数&lt;/li&gt;
+&lt;li&gt;对JS文件和CSS进行合并压缩,以减少网络流量&lt;/li&gt;
+&lt;li&gt;把Sass或者Less文件编译成CSS&lt;/li&gt;
+&lt;li&gt;压缩图像文件,以减少网络流量&lt;/li&gt;
+&lt;li&gt;创建一个可以实时刷新页面内容的本地服务器等等。
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>JSONP模拟百度搜索栏功能</title>
+    <link href="http://yoursite.com/2015/03/26/JSONP%E6%A8%A1%E6%8B%9F%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD/"/>
+    <id>http://yoursite.com/2015/03/26/JSONP模拟百度搜索功能/</id>
+    <published>2015-03-26T13:10:55.000Z</published>
+    <updated>2016-04-22T14:57:03.922Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;前几天介绍了JSONP为何物，今天我们就要用JSONP来做一下百度搜索功能，废话不说，先上个图过过瘾。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;../../../../images/JSONP_baidu/1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如上图，实现了百度搜索功能，接下来我们就来分析分析这个东西怎么做，如果还不知道JSONP是什么。请点击我的另一篇文章&lt;a href=&quot;/2015/03/21/跨域和JSONP/&quot;&gt; 跨域和JSONP &lt;/a&gt;,另外本文还涉及到一个JSONP发送请求的方法，点击&lt;a href=&quot;/2015/03/25/Code_JSONP/&quot;&gt; JSONP的请求封装方法 &lt;/a&gt;查看。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看百度搜索栏JSONP的接口&lt;br&gt;打开百度页面，我们在搜索栏输入aa字母，如下图所示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../../../../images/JSONP_baidu/2.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;从发送的请求中我们可以获得服务器的地址为&lt;code&gt;https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su&lt;/code&gt;，JSONP的函数名为&lt;code&gt;cp&lt;/code&gt;。&lt;br&gt;这样我们就可以进行调用百度搜索栏的API接口，直接附上代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/*引入jsonp.js模块*/
+&amp;lt;script src=&amp;quot;js/jsonp.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+    window.onload = function() {
+        var text = document.getElementById(&amp;apos;text&amp;apos;);
+        var btn = document.getElementById(&amp;apos;btn&amp;apos;);
+        var oUl = document.getElementsByTagName(&amp;apos;ul&amp;apos;)[0];
+        text.onkeyup = function() {
+            oUl.style.display = &amp;quot;block&amp;quot;;
+            var value = text.value; 
+            if(value) {
+                jsonp(&amp;apos;https://gsp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su&amp;apos;, //服务器地址
+                       {wd: value}, //发送的数据
+                       &amp;apos;cb&amp;apos;,   //百度服务器JSONP提供的接口名
+                       function(data){  //回调函数
+                            var list = data.s;  //数据存储在属性s中
+                            var fragement = document.createDocumentFragment();
+                            oUl.innerHTML = &amp;quot;&amp;quot;;
+                            for(var str in list) {
+                                var li = document.createElement(&amp;apos;li&amp;apos;);
+                                li.innerHTML = list[str];
+                                fragement.appendChild(li);
+                            }
+                            oUl.appendChild(fragement);
+                       });
+            }else {
+                oUl.style.display = &amp;quot;none&amp;quot;;
+            }
+        }
+        btn.onclick = function() {
+            var value = text.value; 
+            if(value) {
+                window.open(&amp;apos;http://www.baidu.com/s?word=&amp;apos; + encodeURIComponent(value), &amp;apos;_blank&amp;apos;);
+            }
+        }
+        oUl.onclick = function (e) {
+                e = e || window.event;
+                var target = e.target || e.srcElement;
+                window.open(&amp;apos;http://www.baidu.com/s?word=&amp;apos; + encodeURIComponent(target.innerHTML), &amp;apos;_blank&amp;apos;);
+        };
+    }
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如上所示，代码就这些，就可以实现百度搜索功能模块的，如果要阅读整个完整的demo程序，请到我的github地址 &lt;a href=&quot;https://github.com/CanFoo/Protect_Demo/tree/master/JSONP_Baidu_Serach&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/CanFoo/Protect_Demo/tree/master/JSONP_Baidu_Serach &lt;/a&gt;下载源码。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;前几天介绍了JSONP为何物，今天我们就要用JSONP来做一下百度搜索功能，废话不说，先上个图过过瘾。&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>JSONP的请求封装方法</title>
+    <link href="http://yoursite.com/2015/03/25/Code_JSONP/"/>
+    <id>http://yoursite.com/2015/03/25/Code_JSONP/</id>
+    <published>2015-03-25T13:10:55.000Z</published>
+    <updated>2016-04-22T12:53:06.877Z</updated>
+    
+    <content type="html">&lt;p&gt;封装了JSONP的请求方法，使用方法点击 &lt;a href=&quot;#&quot;&gt;JSONP模拟百度搜索功能&lt;/a&gt; 文章&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;    &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;(function () {
+    /**
+     * JSONP操作
+     * @param url : 请求的url
+     * @param data : 发送数据
+     * @param jsonpcallback : 服务器给出的JSONP端口的API名称
+     * @param callback : 执行JSONP获取数据的回调函数
+     */
+    var jsonp = function (url, data, jsonpcallback, callback) {
+        var cbName = &amp;apos;cb&amp;apos; + jsonp.count++;
+        var callbackName = &amp;apos;window.jsonp.&amp;apos; + cbName;
+        window.jsonp[cbName] = function (jsonpData) {
+            try {
+                callback(jsonpData);
+            } finally {
+                script.parentNode.removeChild(script);
+                delete window.jsonp[cbName];
+            }
+        };
+        var script = document.createElement(&amp;apos;script&amp;apos;);
+        if (data) {
+            data = tool.encodeToURIString(data);
+        }
+        if (typeof jsonpcallback === &amp;apos;string&amp;apos;) {
+            var jsonpData = jsonpcallback + &amp;apos;=&amp;apos; + callbackName;
+        }
+        url = tool.hasSearch(url, data);
+        url = tool.hasSearch(url, jsonpData);
+        script.src = url;
+        document.body.appendChild(script);
+    };
+    jsonp.count = 0;
+    window.jsonp = jsonp;
+    var tool = {
+        encodeToURIString: function (data) {
+            if (!data) return &amp;apos;&amp;apos;;
+            if (typeof data === &amp;apos;string&amp;apos;) return data;
+            var arr = [];
+            for (var n in data) {
+                if (!data.hasOwnProperty(n)) continue;
+                arr.push(encodeURIComponent(n) + &amp;apos;=&amp;apos; + encodeURIComponent(data[n]));
+            }
+            return arr.join(&amp;apos;&amp;amp;&amp;apos;);
+        },
+        hasSearch: function (url, padString) {
+            if (!padString) return url;
+            if (typeof padString !== &amp;apos;string&amp;apos;) return url;
+            return url + (/\?/.test(url) ? &amp;apos;&amp;amp;&amp;apos; : &amp;apos;?&amp;apos;) + padString;
+        }
+    }
+})();
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;封装了JSONP的请求方法，使用方法点击 &lt;a href=&quot;#&quot;&gt;JSONP模拟百度搜索功能&lt;/a&gt; 文章&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>跨域与JSONP</title>
+    <link href="http://yoursite.com/2015/03/21/%E8%B7%A8%E5%9F%9F%E5%92%8CJSONP/"/>
+    <id>http://yoursite.com/2015/03/21/跨域和JSONP/</id>
+    <published>2015-03-21T14:22:05.000Z</published>
+    <updated>2016-04-22T08:33:51.242Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;跨域&quot;&gt;&lt;a href=&quot;#跨域&quot; class=&quot;headerlink&quot; title=&quot;跨域&quot;&gt;&lt;/a&gt;跨域&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;什么是跨域：在当前页面内，访问的请求与当前宿主域名的基本结构不同（方案、域名、端口），那么这个请求就是跨域请求。&lt;/li&gt;
+&lt;li&gt;同源策略：同域策略是浏览器厂商为了安全，强制实施的一种安全限制，简单地理解就是因为JavaScript同源策略的限制，a.com 域名下的js无法操作b.com或是c.a.com域名下的对象。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+JSONP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;JSONP(JSON with Padding)是JSON的一种“使用模式”，可用于解决主流浏览器的跨域数据访问的问题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何实现跨域：HTML的 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; 是一个开源策略，通过它网页可以得到从其他来源动态产生的 JSON 资料，而这种使用模式就是所谓的 JSONP。&lt;/li&gt;
+&lt;li&gt;注意：用JSONP 抓到的数据并不是 JSON，而是任意的JavaScript脚本。&lt;/li&gt;
+&lt;li&gt;执行步骤：&lt;ol&gt;
+&lt;li&gt;必须提前全局定义一个函数fn，用来操作获取到JSONP返回的javaScript脚本&lt;/li&gt;
+&lt;li&gt;把fn和server定义好的参数名(参数名一般是cb、callback、jsonpcallback)一起拼接到url的后面，eg: &lt;code&gt;www.baidu.com?fn=cb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;server返回fn&lt;/li&gt;
+&lt;li&gt;浏览器收到数据之后，就开始把数据当成js来执行，也就是执行fn方法&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;JSONP简单的demo&quot;&gt;&lt;a href=&quot;#JSONP简单的demo&quot; class=&quot;headerlink&quot; title=&quot;JSONP简单的demo&quot;&gt;&lt;/a&gt;JSONP简单的demo&lt;/h2&gt;&lt;p&gt;介绍完几个定义，现在可以来演示一个简单demo了。&lt;br&gt;首先我们必须先自己一个后台服务，用什么写呢？肯定是nodejs，nodejs可谓前端一大神器，关于nodejs介绍我会在后续进行更新，如果现在你不懂什么nodejs，那么这个demo看看就可以，可以阅读我另一篇文章 JSONP实现百度栏搜索功能。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务器代码：&lt;pre&gt;&lt;code&gt;/*server.js*/
+var http = require(&amp;apos;http&amp;apos;);
+var url = require(&amp;apos;url&amp;apos;);
+var path = require(&amp;apos;path&amp;apos;);
+var server = http.createServer(function(request, response){
+    var urlObj = url.parse(request.url, true);
+    /*得到用户自定义的函数变量*/
+    var val = urlObj.query.val;
+    /*模拟数据*/
+    var json = JSON.stringify({&amp;apos;name&amp;apos;: &amp;apos;joe&amp;apos;, &amp;apos;age&amp;apos;: &amp;apos;24&amp;apos;});
+    /*返回javascript数据*/
+    response.end(val + &amp;apos;(&amp;apos; + json + &amp;apos;)&amp;apos;);
+});
+/*开启后台服务：localhost:8080*/
+server.listen(8080, function() {
+    console.log(&amp;apos;start&amp;apos;);
+})
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;前台HTML文件&lt;pre&gt;&lt;code&gt;/*JSONP_demo.html*/
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head lang=&amp;quot;en&amp;quot;&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;JSONP&amp;lt;/title&amp;gt;
+    &amp;lt;style&amp;gt;
+    &amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+    /*定义全局函数fn，用于执行JSONP的返回的javascript脚本*/
+    function fn(data){
+        console.log(data); //打印后台传来的数据
+    }
+&amp;lt;/script&amp;gt;
+/*发起跨域请求*/
+&amp;lt;script src=&amp;quot;http://127.0.0.1:8080?val=fn&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;执行步骤&lt;ol&gt;
+&lt;li&gt;在命令行运行：&lt;code&gt;node server.js&lt;/code&gt;，就可以启动我们的后台服务&lt;/li&gt;
+&lt;li&gt;在chrome打开JSONP_demo.html文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;观察现象&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;我们可以在chrome的控制台观察到&lt;br&gt;&lt;img src=&quot;../../../../images/JSONP/1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;控制台如我们所愿执行了fn函数，并打印出后台返回的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为什么会执行执行fn函数？&lt;br&gt;本地页面通过script发起跨域请求，如下图所示：&lt;br&gt;&lt;img src=&quot;../../../../images/JSONP/2.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;服务器器接受到请求，并返回数据，如下图所示：&lt;br&gt;&lt;img src=&quot;../../../../images/JSONP/3.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如上图，我们可以看到fn为什么会执行了，因为服务器返回了&lt;code&gt;fn({&amp;quot;name&amp;quot;:&amp;quot;joe&amp;quot;,&amp;quot;age&amp;quot;:&amp;quot;24&amp;quot;})&lt;/code&gt;脚本，而fn又是我们本地定义的一个全局函数，因此浏览器便会执行这个函数了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;跨域&quot;&gt;&lt;a href=&quot;#跨域&quot; class=&quot;headerlink&quot; title=&quot;跨域&quot;&gt;&lt;/a&gt;跨域&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;什么是跨域：在当前页面内，访问的请求与当前宿主域名的基本结构不同（方案、域名、端口），那么这个请求就是跨域请求。&lt;/li&gt;
+&lt;li&gt;同源策略：同域策略是浏览器厂商为了安全，强制实施的一种安全限制，简单地理解就是因为JavaScript同源策略的限制，a.com 域名下的js无法操作b.com或是c.a.com域名下的对象。
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>animate类库</title>
+    <link href="http://yoursite.com/2014/10/17/Code_Animate/"/>
+    <id>http://yoursite.com/2014/10/17/Code_Animate/</id>
+    <published>2014-10-17T13:56:38.000Z</published>
+    <updated>2016-04-22T15:06:09.291Z</updated>
+    
+    <content type="html">&lt;p&gt;实现animate简单运动的方法。&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;(function () {
+    /**
+     * 获取元素的样式值
+     * @param ele : 元素
+     * @param attr : 样式名
+     * @returns {*}
+     */
+    animate.getCss = function (ele, attr) {
+        if (window.getComputedStyle) {
+            return parseFloat(getComputedStyle(ele)[attr]);
+        }
+        else {
+            if (attr == &amp;quot;opacity&amp;quot;) {
+                var value = ele.currentStyle.filter;
+                var reg = /alpha\(opacity *= *(\d+(\.\d+)?)\)/;
+                if (reg.test(value)) {
+                    return RegExp.$1 / 100;
+                }
+                else {
+                    return 1;
+                }
+            }
+            return parseFloat(ele.currentStyle[attr]);
+        }
+    }
+
+    /**
+     * 设置元素的样式值
+     * @param ele : 元素
+     * @param attr : 样式
+     * @param value : 值
+     */
+    animate.setCss = function (ele, attr, value) {
+        if (attr == &amp;quot;opacity&amp;quot;) {
+            ele.style.opacity = value;
+            ele.style.filter = &amp;quot;alpha(opacity=&amp;quot; + value * 100 + &amp;quot;)&amp;quot;;
+        }
+        else {
+            ele.style[attr] = value + &amp;quot;px&amp;quot;;
+        }
+    }
+
+    /**
+     * 设置元素的动画
+     * @param ele : 元素
+     * @param obj : 运动的参数集合
+     * @param duration : 运动的时间
+     * @param callback : 运动完的回调函数（可选）
+     */
+    function animate(ele, obj, duration, callback) {
+        var times = 0;
+        var interval = 15;
+        var oChange = {};
+        var oBegin = {};
+        var flag = 0;
+        for (var attr in obj) {
+            var target = obj[attr];
+            var begin = animate.getCss(ele, attr);
+            var change = target - begin;
+            if (change) {
+                oBegin[attr] = begin;
+                oChange[attr] = change;
+                flag++;
+            }
+        }
+        if (flag == 0) {
+            return;
+        }
+        window.clearInterval(ele.timer);
+        function step() {
+            times += interval;
+            if (times &amp;lt; duration) {
+                for (var attr in oChange) {
+                    var value = times / duration * oChange[attr] + oBegin[attr];
+                    animate.setCss(ele, attr, value);
+                }
+            }
+            else {
+                for (var attr in oChange) {
+                    animate.setCss(ele, attr, obj[attr]);
+                }
+                window.clearInterval(ele.timer);
+                ele.timer = null;
+                if (typeof callBack == &amp;quot;function&amp;quot;) {
+                    callBack.call(ele);
+                }
+            }
+        }
+        ele.timer = window.setInterval(step, interval);
+    }
+})();
+
+/**
+ * 示例：
+ * var ele = 获得元素
+ * var obj = {&amp;apos;left&amp;apos; : 1000, &amp;apos;height&amp;apos;: 300}; 设置运动目标参数集合
+ * animate(ele, obj, 1000, function(){console.log(&amp;quot;sucess!&amp;quot;)})
+ * //ele开始运动，运动时间为1s,运动完后打印字符串&amp;quot;sucess&amp;quot;;
+ */
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;实现animate简单运动的方法。&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DOM操作类库</title>
+    <link href="http://yoursite.com/2014/10/15/Code_DOM/"/>
+    <id>http://yoursite.com/2014/10/15/Code_DOM/</id>
+    <published>2014-10-15T12:30:13.000Z</published>
+    <updated>2016-04-22T15:06:38.135Z</updated>
+    
+    <content type="html">&lt;p&gt;仿照jQuery封装了一些简单DOM操作的方法。&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var DOM = (function () {
+    var flag = &amp;quot;getComputedStyle&amp;quot; in window;
+
+    /**
+     * 将类数组转换为数组
+     * @param likeAry : 类数组
+     * @returns {Array}
+     */
+    function listToArray(likeAry) {
+        if (flag) {
+            return Array.prototype.slice.call(likeAry, 0);
+        }
+        var ary = [];
+        for (var i = 0; i &amp;lt; likeAry.length; i++) {
+            ary[ary.length] = likeAry[i];
+        }
+        return ary;
+    }
+
+    /**
+     * 获取所有的元素子节点
+     * @param curEle : 元素节点
+     * @param tagName : 指定的标签名
+     * @returns {Array}
+     */
+    function children(curEle, tagName) {
+        var ary = [];
+        if (!flag) {
+            var nodeList = curEle.childNodes;
+            for (var i = 0, len = nodeList.length; i &amp;lt; len; i++) {
+                var curNode = nodeList[i];
+                curNode.nodeType === 1 ? ary[ary.length] = curNode : null;
+            }
+            nodeList = null;
+        } else {
+            ary = this.listToArray(curEle.children);
+        }
+        if (typeof tagName === &amp;quot;string&amp;quot;) {
+            for (var k = 0; k &amp;lt; ary.length; k++) {
+                var curEleNode = ary[k];
+                if (curEleNode.nodeName.toLowerCase() !== tagName.toLowerCase()) {
+                    ary.splice(k, 1);
+                    k--;
+                }
+            }
+        }
+        return ary;
+    }
+
+    /**
+     * 获取上一个哥哥元素节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function prev(curEle) {
+        if (flag) {
+            return curEle.previousElementSibling;
+        }
+        var pre = curEle.previousSibling;
+        while (pre &amp;amp;&amp;amp; pre.nodeType !== 1) {
+            pre = pre.previousSibling;
+        }
+        return pre;
+    }
+
+    /**
+     * 获取下一个弟弟元素节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function next(curEle) {
+        if (flag) {
+            return curEle.nextElementSibling;
+        }
+        var nex = curEle.nextSibling;
+        while (nex &amp;amp;&amp;amp; nex.nodeType !== 1) {
+            nex = nex.nextSibling;
+        }
+        return nex;
+    }
+
+    /**
+     * 获取所有的哥哥元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function prevAll(curEle) {
+        var ary = [];
+        var pre = this.prev(curEle);
+        while (pre) {
+            ary.unshift(pre);
+            pre = this.prev(pre);
+        }
+        return ary;
+    }
+
+    /**
+     * 获取所有的弟弟元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function nextAll(curEle) {
+        var ary = [];
+        var nex = this.next(curEle);
+        while (nex) {
+            ary.push(nex);
+            nex = this.next(nex);
+        }
+        return ary;
+    }
+
+    /**
+     * 获取相邻的两个元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function sibling(curEle) {
+        var pre = this.prev(curEle);
+        var nex = this.next(curEle);
+        var ary = [];
+        pre ? ary.push(pre) : null;
+        nex ? ary.push(nex) : null;
+        return ary;
+    }
+
+    /**
+     * 获取所有的兄弟元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function siblings(curEle) {
+        return this.prevAll(curEle).concat(this.nextAll(curEle));
+    }
+
+    /**
+     * 获取当前元素在当前容器中的索引
+     * @param curEle
+     * @returns {Number}
+     */
+    function index(curEle) {
+        return this.prevAll(curEle).length;
+    }
+
+    /**
+     * 获取当前元素下的第一个元素子节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function firstChild(curEle) {
+        var chs = this.children(curEle);
+        return chs.length &amp;gt; 0 ? chs[0] : null;
+    }
+
+    /**
+     * 获取最后一个元素子节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function lastChild(curEle) {
+        var chs = this.children(curEle);
+        return chs.length &amp;gt; 0 ? chs[chs.length - 1] : null;
+    }
+
+    /**
+     * 向指定容器的末尾追加元素
+     * @param newEle : 要添加的元素
+     * @param container : 指定的容器
+     */
+    function append(newEle, container) {
+        container.appendChild(newEle);
+    }
+
+    /**
+     * 向指定容器的开头追加元素
+     * @param newEle : 要添加的元素
+     * @param container : 指定的容器
+     */
+    function prepend(newEle, container) {
+        var fir = this.firstChild(container);
+        if (fir) {
+            container.insertBefore(newEle, fir);
+            return;
+        }
+        container.appendChild(newEle);
+    }
+
+    /**
+     * 把新元素(newEle)追加到指定元素(oldEle)的前面
+     * @param newEle : 新元素
+     * @param oldEle : 当前元素
+     */
+    function insertBefore(newEle, oldEle) {
+        oldEle.parentNode.insertBefore(newEle, oldEle);
+    }
+
+    /**
+     * 把新元素(newEle)追加到指定元素(oldEle)的后面
+     * @param newEle : 新元素
+     * @param oldEle : 当前元素
+     */
+    function insertAfter(newEle, oldEle) {
+        var nex = this.next(oldEle);
+        if (nex) {
+            oldEle.parentNode.insertBefore(newEle, nex);
+            return;
+        }
+        oldEle.parentNode.appendChild(newEle);
+    }
+
+    /**
+     * 验证当前元素中是否包含className这个样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     * @returns {boolean}
+     */
+    function hasClass(curEle, className) {
+        var reg = new RegExp(&amp;quot;(^| +)&amp;quot; + className + &amp;quot;( +|$)&amp;quot;);
+        return reg.test(curEle.className);
+    }
+
+    /**
+     * 给元素增加样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     */
+    function addClass(curEle, className) {
+        var ary = className.replace(/(^ +| +$)/g, &amp;quot;&amp;quot;).split(/ +/g);
+        for (var i = 0, len = ary.length; i &amp;lt; len; i++) {
+            var curName = ary[i];
+            if (!this.hasClass(curEle, curName)) {
+                curEle.className += &amp;quot; &amp;quot; + curName;
+            }
+        }
+    }
+
+    /**
+     * 给元素移除样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     */
+    function removeClass(curEle, className) {
+        var ary = className.replace(/(^ +| +$)/g, &amp;quot;&amp;quot;).split(/ +/g);
+        for (var i = 0, len = ary.length; i &amp;lt; len; i++) {
+            var curName = ary[i];
+            if (this.hasClass(curEle, curName)) {
+                var reg = new RegExp(&amp;quot;(^| +)&amp;quot; + curName + &amp;quot;( +|$)&amp;quot;, &amp;quot;g&amp;quot;);
+                curEle.className = curEle.className.replace(reg, &amp;quot; &amp;quot;);
+            }
+        }
+    }
+
+    /**
+     * 通过元素的样式类名获取一组元素集合
+     * @param strClass : 类名
+     * @param context : 上下文
+     * @returns {Array or null}
+     */
+    function getElementsByClass(strClass, context) {
+        context = context || document;
+        if (flag) {
+            return this.listToArray(context.getElementsByClassName(strClass));
+        }
+        //-&amp;gt;IE6~8
+        var ary = [], strClassAry = strClass.replace(/(^ +| +$)/g, &amp;quot;&amp;quot;).split(/ +/g);
+        var nodeList = context.getElementsByTagName(&amp;quot;*&amp;quot;);
+        for (var i = 0, len = nodeList.length; i &amp;lt; len; i++) {
+            var curNode = nodeList[i];
+            var isOk = true;
+            for (var k = 0; k &amp;lt; strClassAry.length; k++) {
+                var reg = new RegExp(&amp;quot;(^| +)&amp;quot; + strClassAry[k] + &amp;quot;( +|$)&amp;quot;);
+                if (!reg.test(curNode.className)) {
+                    isOk = false;
+                    break;
+                }
+            }
+            if (isOk) {
+                ary[ary.length] = curNode;
+            }
+        }
+        return ary;
+    }
+
+    /**
+     * 获取元素的样式值
+     * @param attr : 样式
+     * @returns {*}
+     */
+    function getCss(attr) {
+        var val = null, reg = null;
+        if (flag) {
+            val = window.getComputedStyle(this, null)[attr];
+        } else {
+            if (attr === &amp;quot;opacity&amp;quot;) {
+                val = this.currentStyle[&amp;quot;filter&amp;quot;];
+                reg = /^alpha\(opacity=(\d+(?:\.\d+)?)\)$/;
+                val = reg.test(val) ? reg.exec(val)[1] / 100 : 1;
+            } else {
+                val = this.currentStyle[attr];
+            }
+        }
+        reg = /^(-?\d+(\.\d+)?)(px|pt|em|rem)?$/;
+        return reg.test(val) ? parseFloat(val) : val;
+    }
+
+    /**
+     * 给当前元素的某一个样式属性设置值
+     * @param attr : 样式
+     * @returns {*}
+     */
+    function setCss(attr, value) {
+        if (attr === &amp;quot;float&amp;quot;) {
+            this[&amp;quot;style&amp;quot;][&amp;quot;cssFloat&amp;quot;] = value;
+            this[&amp;quot;style&amp;quot;][&amp;quot;styleFloat&amp;quot;] = value;
+            return;
+        }
+        if (attr === &amp;quot;opacity&amp;quot;) {
+            this[&amp;quot;style&amp;quot;][&amp;quot;opacity&amp;quot;] = value;
+            this[&amp;quot;style&amp;quot;][&amp;quot;filter&amp;quot;] = &amp;quot;alpha(opacity=&amp;quot; + value * 100 + &amp;quot;)&amp;quot;;
+            return;
+        }
+        var reg = /^(width|height|top|bottom|left|right|((margin|padding)(Top|Bottom|Left|Right)?))$/;
+        if (reg.test(attr)) {
+            if (!isNaN(value)) {
+                value += &amp;quot;px&amp;quot;;
+            }
+        }
+        this[&amp;quot;style&amp;quot;][attr] = value;
+    }
+
+    /**
+     * 给当前元素批量的设置样式属性值
+     * @param options : 对象集合
+     */
+    function setGroupCss(options) {
+        for (var key in options) {
+            if (options.hasOwnProperty(key)) {
+                setCss.call(this, key, options[key]);
+            }
+        }
+    }
+
+    return {
+        children: children,
+        prev: prev,
+        next: next,
+        prevAll: prevAll,
+        nextAll: nextAll,
+        sibling: sibling,
+        siblings: siblings,
+        index: index,
+        firstChild: firstChild,
+        lastChild: lastChild,
+        append: append,
+        prepend: prepend,
+        insertBefore: insertBefore,
+        insertAfter: insertAfter,
+        hasClass: hasClass,
+        addClass: addClass,
+        removeClass: removeClass,
+        getElementsByClass: getElementsByClass,
+    }
+})();
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;仿照jQuery封装了一些简单DOM操作的方法。&lt;br&gt;更多的类库源码请到我的github地址： &lt;a href=&quot;https://github.com/CanFoo/selfJSLib.git&quot;&gt;https://github.com/CanFoo/selfJSLib.git&lt;/a&gt; 进行下载。&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>HTTP与AJAX</title>
+    <link href="http://yoursite.com/2014/10/03/HTTP%E4%B8%8EAJAX/"/>
+    <id>http://yoursite.com/2014/10/03/HTTP与AJAX/</id>
+    <published>2014-10-03T14:30:13.000Z</published>
+    <updated>2016-04-22T00:45:43.179Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;http&quot;&gt;&lt;a href=&quot;#http&quot; class=&quot;headerlink&quot; title=&quot;http&quot;&gt;&lt;/a&gt;http&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;http是超文本传输协议&lt;/li&gt;
+&lt;li&gt;http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）&lt;/li&gt;
+&lt;li&gt;http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成&lt;/li&gt;
+&lt;li&gt;request和response都包含一个报文&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;报文格式：&lt;ol&gt;
+&lt;li&gt;起始行（http的基本信息）&lt;ul&gt;
+&lt;li&gt;请求的起始行-&amp;gt; 包含http方法，request url，http的版本号&lt;/li&gt;
+&lt;li&gt;响应的的起始行-&amp;gt; http的版本号（和请求的版本号的一致）、状态码、状态码描述符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;首部（请求头\响应头，用来描述http特征以及负数信息）&lt;/li&gt;
+&lt;li&gt;主体（数据的承载，请求或者响应的）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;http 状态码(描述http的响应状态)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;101 浏览器发送http请求之后，还没收到http响应&lt;/li&gt;
+&lt;li&gt;2xx 成功 200–&amp;gt;OK 202–&amp;gt;accepted&lt;/li&gt;
+&lt;li&gt;3xx 重定向 301–&amp;gt;永久转移 302–&amp;gt;临时转移 304–&amp;gt;没有改变 not modified 走缓存&lt;/li&gt;
+&lt;li&gt;4xx 客户端错误 400–&amp;gt;bad reqeust 401–&amp;gt;未认证 403–&amp;gt;禁止访问 没有权限 404–&amp;gt;未找到&lt;/li&gt;
+&lt;li&gt;5xx 500–&amp;gt;服务器内部错误&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;http方法（http请求的）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GET: 从服务器获取数据&lt;ol&gt;
+&lt;li&gt;没有请求主体，把参数都放到url里面&lt;/li&gt;
+&lt;li&gt;十分容易被浏览器缓存（只要数据被浏览器缓存，都是GET方法）&lt;/li&gt;
+&lt;li&gt;有大小限制（因为它把参数都放到url里了，而浏览器对url的长度有限制，所以造成GET方法有大小限制）chrome 8k,firefox 7k, IE 2k.&lt;/li&gt;
+&lt;li&gt;明文发送，不宜发送私密数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;POST：往服务器发送数据&lt;ol&gt;
+&lt;li&gt;有请求主体&lt;/li&gt;
+&lt;li&gt;永远不会被缓存&lt;/li&gt;
+&lt;li&gt;没有大小限制&lt;/li&gt;
+&lt;li&gt;非明文发送，可以发送私密数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;DELE TE:告诉服务器删除数据&lt;ol&gt;
+&lt;li&gt;特点和GET一模一样&lt;/li&gt;
+&lt;li&gt;成功响应码为202（服务器接受了，但不一定操作）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;HEAD:告诉服务器只返回响应起始行和响应首部即可，不需要返回响应主体&lt;ol&gt;
+&lt;li&gt;不会被缓存，其他的和GET一模一样&lt;/li&gt;
+&lt;li&gt;没有响应的主体&lt;/li&gt;
+&lt;li&gt;应用场景（同步服务器时间、秒杀、获取即将下载文件的信息）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;PUT:往服务器推送数据&lt;ol&gt;
+&lt;li&gt;特点和POST一模一样&lt;/li&gt;
+&lt;li&gt;成功的形影码为202（服务器接受了，但不一定操作）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;OPTIONS:检索服务器都支持哪些http方法。并将结果放到响应首部中，不需要返回响应主体。&lt;ol&gt;
+&lt;li&gt;只是用来检索服务器支持哪些httpf方法&lt;/li&gt;
+&lt;li&gt;没有响应主体&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;URL格式：&lt;code&gt;&amp;lt;scheme&amp;gt;://&amp;lt;username&amp;gt;:&amp;lt;password&amp;gt;@&amp;lt;hostname&amp;gt;:&amp;lt;port&amp;gt;&amp;lt;pathname&amp;gt;?&amp;lt;search&amp;gt;#&amp;lt;hash&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;URL的方案（标识url通过此方法去请求server）&lt;ul&gt;
+&lt;li&gt;http 默认端口 800&lt;/li&gt;
+&lt;li&gt;https 默认端口 443 http+SSL/TSL(非对称加密RSA算法)&lt;/li&gt;
+&lt;li&gt;smtp 邮件系统&lt;/li&gt;
+&lt;li&gt;ftp 文件传输系统&lt;/li&gt;
+&lt;li&gt;file 本地文件，该方法无法执行ajax请求（因为ajax基于http的，http基于网络，而本地硬盘没有网络）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;AJAX&quot;&gt;&lt;a href=&quot;#AJAX&quot; class=&quot;headerlink&quot; title=&quot;AJAX&quot;&gt;&lt;/a&gt;AJAX&lt;/h2&gt;&lt;p&gt;AJAX是一种创建快捷动态网页的技术，可以实现页面的异步加载。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;兼容性&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var xhl = XMLHttpRequest(); //兼容chrome、 firefox、 safari、 opera、
+ie7+（但是ie7做得有缺陷，因此IE10以下不用这个方法）
+
+/*IE浏览器*/
+var ieXHR = new ActiveXObject(&amp;apos;Microsoft.XMLHTTP&amp;apos;);
+var eage = new ActiveXbject(&amp;apos;Msxml2.XMLHTTP&amp;apos;);
+var sange = new ActiveXbject(&amp;apos;Msxml3.XMLHTTP&amp;apos;);
+
+/获取AJAX对象兼容方法封装方法/
+var getXHR = (function() {
+    var list = [
+        function() {
+            return new XMLHttpRequest();
+        },
+        function() {
+            return new ActiveXObject(&amp;apos;Microsoft.XMLHTTP&amp;apos;);
+        },
+        function() {
+            return new ActiveXObject(&amp;apos;Msxml2.XMLHTTP&amp;apos;);
+        },
+        function() {
+            return new ActiveXObject(&amp;apos;Msxml3.XMLHTTP&amp;apos;);
+        }]
+    var len = list.length;
+    var xhr = null;
+    while(len--){
+        try {
+            list[len]();
+            xhr = list[len];
+            break;
+        }catch(e) {
+            continue;
+        }
+    }
+    if(xhr != null){
+        return xhr;
+    }
+})();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;AJAX操作步骤&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//1.创建对象
+var xhr = getXHR();
+//2.调用open方法
+/**
+ * 第一个参数：http方法
+ * 第二个参数：url
+ * 第三个参数：是否为异步，默认为true
+ * 第四个参数：username,默认为undefined
+ * 第五个参数：password，默认为undefined
+ */
+xhr.open(&amp;apos;GET&amp;apos;, &amp;apos;&amp;apos;, true);
+
+//3.获取响应
+//xhr.readyState 是一个枚举值（有几个固定值存在）
+/**
+ * 0：UNSET 默认值 表示ajax对象仅仅初始化完成
+ * 1：OPEN 已经执行AJAX对象open方法
+ * 2：HEADERS_RECEIVE 接受到http响应首部
+ * 3：LOADING 正在接受响应主体
+ * 4：DONE 全部完成 http事务完成
+ */
+xhr.onreadystatechange = function() {
+    //验证xhr状态是否完成
+    if(xhr.readyState===4){
+        //验证http响应码是为2xx
+        if(/^2\d{2}$/.test(xhr.status)) {
+            console.log(xhr.responseText); //把响应主体当做字符串显示
+            console.log(xhr.responseXML);  //把响应主体当做XML显示
+            console.log(xhr.response);//直接获取响应主体，不进行转型，有兼容性，IE10+
+        }else {
+            console.log(&amp;quot;something wrong&amp;quot;)
+        }
+    }
+
+}
+
+//4.发起http请求
+/**
+ * 参数类型：string fromdata(H5 表单数据) blob(二进制块) arraybuffer(二进制流)
+ * null undefined
+ * send方法参数会把参数放到什么地方？
+ * 答：会把参数放到请求主体里，因为get系(get, delete, head)没有请求主体，所以参数也无效，
+ * 因此get系请求不需要传参数,如果是post系，则就会把参数原封不动放到请求主体里
+ */
+xhr.send();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;ajax的同步和异步（对应open的第三个参数的true和false）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;同步：ajax操作的http事务完成之后，send方法后面的逻辑才可以执行，因此onchangestatechange必须写在send前边&lt;/li&gt;
+&lt;li&gt;异步：不需要等待http事务完成，可以直接执行send方法后面的逻辑&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;http&quot;&gt;&lt;a href=&quot;#http&quot; class=&quot;headerlink&quot; title=&quot;http&quot;&gt;&lt;/a&gt;http&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;http是超文本传输协议&lt;/li&gt;
+&lt;li&gt;http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）&lt;/li&gt;
+&lt;li&gt;http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成&lt;/li&gt;
+&lt;li&gt;request和response都包含一个报文
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数据类型检测</title>
+    <link href="http://yoursite.com/2014/10/01/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%B5%8B/"/>
+    <id>http://yoursite.com/2014/10/01/数据类型检测/</id>
+    <published>2014-10-01T15:10:12.000Z</published>
+    <updated>2016-04-21T16:10:04.809Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;数据类型检测几种方法&quot;&gt;&lt;a href=&quot;#数据类型检测几种方法&quot; class=&quot;headerlink&quot; title=&quot;数据类型检测几种方法&quot;&gt;&lt;/a&gt;数据类型检测几种方法&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;console.log(typeof 1); //Number
+console.log(typeof &amp;quot;sss&amp;quot;); //Number
+console.log(typeof true); //Number
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  局限性：不能具体的细分是数组还是正则，还是对象中其他的值，因为使用typeof检测数据类型，对于对象数据中的左右的值，最后返回的结果都是”object”&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;console.log(typeof null); // &amp;quot;object&amp;quot;
+console.log(typeof [2,3]); // &amp;quot;object&amp;quot;
+console.log(typeof /\d/); // &amp;quot;object&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;instanceof：检测一个实例是否属于某个类&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var obj = [12, 23];
+console.log(obj instanceof Array);// true
+console.log(obj instanceof RegExp);// true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  局限性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不能用来检测和处理字面量方式创建出来的基本数据类型值&lt;br&gt;对于基本数据来说，字面量方式创建出来的结果和实例方式创建出来的结果是有一定区别的，从严格意义上来讲，只有实例创造出来的结果才是标准对象数据类型，也是标准的Number这个类的一个实例；对于字面量创造出来的结果是基本的数据类型，不是严谨的实例，但是由于JS的松散特点&lt;pre&gt;&lt;code&gt;console.log(1 instanceof Number); //false
+console.log(new Number(1) instanceof Number); //true
+console.log(&amp;quot;ss&amp;quot; instanceof String); //false
+console.log(new String(&amp;quot;ss&amp;quot;) instanceof String); //true
+console.log(true instanceof RegEXP); //false
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;instance的特性：只要在当前实例的原型链上，我们用其检测出来的结果都是true&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var ary = [];
+console.log(ary instanceof Array); //true
+console.log(ary instanceof Object); //true
+//因此在类的原型继承中，我们最后检测出来的结果未必准确
+
+function Fn() {
+}
+var ary = new Array;
+Fn.prototype = ary;//原型继承:让子类的原型等于父类的一个实例
+var f = new Fn;//f-&amp;gt;Fn.prototype-&amp;gt;Array.prototype-&amp;gt;Object.prototype
+console.log(f instanceof Array);//true
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;constructor：作用和instaceof非常相似&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var obj = [];
+console.log(obj.constructor === Array); //true
+console.log(obj.constructor === RegExp); //false
+constructor可以处理基本数据类型
+console.log((1).constructor === Number); //true
+constructor检测Object和instanceof不一样，一般情况下检测不了
+console.log((1).constructor === Number); //true
+console.log((1).constructor === Object); //false
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  局限性：我们可以把类的原型进行重写，在重写的过程中很有可能出现把之前的constructor给覆盖了，这样检测出来的结果就不准确&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Fn() { }
+Fn.prototype = new Array;
+var fn = new Fn;
+console.log(fn.constructor); //Array
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  对于特出的数据类型null和undefined,它们的所属类是Null和Undefined，但是浏览器把这两个保护起来，不允许我们在外面访问使用。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;undefined instanceof Undefined; //报错
+null instanceof Null; //报错
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;Object.prototype.toString().call：首先获取原型上的toString方法，让方法执行，并且改变方法中this关键字的指向（所有数据类型都有toString方法）&lt;ul&gt;
+&lt;li&gt;Object.prototype.toString()它的作用是返回当前方法的指向主体（方法中的this）所属类的详细信息,&lt;pre&gt;&lt;code&gt; var = obj = {name: &amp;quot;Joe&amp;quot;};
+ console.log(obj.toString()); //[object, Object];
+ &amp;quot;[object Object]&amp;quot;第一个object代表当前实例是对象数据类型的(这个是固定死的),第二个Object代表的
+     是obj所属的类是Object。
+console.log(Object.prototype.toString.call([]));//-&amp;gt;&amp;quot;[object Array]&amp;quot;
+console.log(Object.prototype.toString.call(/^$/));//-&amp;gt;&amp;quot;[object RegExp]&amp;quot;
+console.log(({}).toString.call(new Date));//-&amp;gt;&amp;quot;[object Date]&amp;quot;
+console.log(Object.prototype.toString.call(1));//-&amp;gt;&amp;quot;[object Number]&amp;quot;
+console.log(Object.prototype.toString.call(&amp;quot;中国&amp;quot;));//-&amp;gt;&amp;quot;[object String]&amp;quot;
+console.log(Object.prototype.toString.call(true));//-&amp;gt;&amp;quot;[object Boolean]&amp;quot;
+console.log(Object.prototype.toString.call(null));//-&amp;gt;&amp;quot;[object Null]&amp;quot;
+console.log(Object.prototype.toString.call(undefined));//-&amp;gt;&amp;quot;[object Undefined]&amp;quot;
+console.log(Object.prototype.toString.call(function() {}));//-&amp;gt;&amp;quot;[object Function]&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;pre&gt;&lt;code&gt;var ary = [];
+console.log(Object.prototype.toString.call(ary) === &amp;quot;[object Array]&amp;quot;);//-&amp;gt;true
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;数据类型检测几种方法&quot;&gt;&lt;a href=&quot;#数据类型检测几种方法&quot; class=&quot;headerlink&quot; title=&quot;数据类型检测几种方法&quot;&gt;&lt;/a&gt;数据类型检测几种方法&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;console.log(typeof 1); //Number
+console.log(typeof &amp;quot;sss&amp;quot;); //Number
+console.log(typeof true); //Number
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  局限性：不能具体的细分是数组还是正则，还是对象中其他的值，因为使用typeof检测数据类型，对于对象数据中的左右的值，最后返回的结果都是”object”&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;console.log(typeof null); // &amp;quot;object&amp;quot;
+console.log(typeof [2,3]); // &amp;quot;object&amp;quot;
+console.log(typeof /\d/); // &amp;quot;object&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>正则</title>
+    <link href="http://yoursite.com/2014/09/28/%E6%AD%A3%E5%88%99/"/>
+    <id>http://yoursite.com/2014/09/28/正则/</id>
+    <published>2014-09-28T15:10:12.000Z</published>
+    <updated>2016-04-21T15:55:00.023Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;正则的规则&quot;&gt;&lt;a href=&quot;#正则的规则&quot; class=&quot;headerlink&quot; title=&quot;正则的规则&quot;&gt;&lt;/a&gt;正则的规则&lt;/h2&gt;&lt;p&gt;正则用来处理字符串的规则。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;正则元字符(在两个斜杠之间包含的字符都是正则都是正则的元字符)：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;具有特殊意义的元字符&lt;br&gt; \d -&amp;gt; 匹配一个0-9的数字,相当于[0-9],和它相反的是\D -&amp;gt;匹配一个除0-9的任意字符&lt;br&gt; \w -&amp;gt; 匹配一个0-9、a-z、A-Z、&lt;em&gt;的数字或字符,相当于[0-9a-zA-Z&lt;/em&gt;]&lt;br&gt; \s -&amp;gt; 匹配一个空白字符(空格、制表符…)&lt;br&gt; \b -&amp;gt; 匹配一个单词的边界&lt;br&gt; \t -&amp;gt; 匹配一个制表符&lt;br&gt; \n -&amp;gt; 匹配一个换行&lt;br&gt; . -&amp;gt; 匹配一个除了\r\n以外的任意字符&lt;br&gt; ^ -&amp;gt; 以某一个元字符开头&lt;br&gt; $ -&amp;gt; 以某一个元字符结尾&lt;br&gt; \ -&amp;gt; 转义字符&lt;br&gt; x|y -&amp;gt; x或者y的一个&lt;br&gt; [xyz] -&amp;gt; x、y、z中的任意一个&lt;br&gt; [^xyz] -&amp;gt; 除了xyz中的任意一个字符&lt;br&gt; [a-z] -&amp;gt; 匹配a-z中的任意一个字符&lt;br&gt; [^a-z] -&amp;gt; 匹配除了a-z中的任意一个字符&lt;br&gt; () -&amp;gt; 正则中的分组&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;代表出现次数的量词元字符&lt;ul&gt;
+&lt;li&gt;-&amp;gt; 0到多个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;-&amp;gt; 1到多个&lt;br&gt;? -&amp;gt; 0到1个&lt;br&gt;{n} -&amp;gt; 出现n次&lt;br&gt;{n,} -&amp;gt; 出现n到多次&lt;br&gt;{n,m} -&amp;gt; 出现n到m次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;代表本身意思的元字符：除了以上的,在字面量方式中,我们出现的其他任意字符代表的都是自己本身的意思。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;正则一些细节点&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;关于[ ]&lt;ul&gt;
+&lt;li&gt;[+] -&amp;gt;中括号中出现的单字符（+，-，*，！等等）都代表的是本身的意思,&lt;/li&gt;
+&lt;li&gt;[12-65] -&amp;gt;这个不是12-65而是1/2-6/5三者中的一个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;()分组：把一个大正则划分成几个小正则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分组的第一个作用:改变默认的优先级&lt;pre&gt;&lt;code&gt;var reg = /^18|29$/; //-&amp;gt;18、19、182、189、829、1829...这些都符合,不是我们想要的只是18或者29
+var reg = /^(18|29)$/;//-&amp;gt;现在只能是18或者29了
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;分组的第二个作用:分组引用,如\1代表的是和和第一个分组出现一模一样的内容&lt;pre&gt;&lt;code&gt;var reg = /^\w(\w)\1\w$/;//-&amp;gt;food week door wood good...
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;分组捕获:不仅大正则匹配的内容捕获到,而且还可以把每一个小分组单独匹配的内容也捕获到&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//身份证
+//-&amp;gt;13(省) 0828(市和县) 1990(年) 12(月) 04(日) 06 1(奇数男 偶数女) 7(数字或者X)
+var reg = /^([1-9]\d)(\d{4})(\d{4})(\d{2})(\d{2})\d{2}(\d)(?:\d|X)$/;
+console.dir(reg.exec(&amp;quot;130828199012040617&amp;quot;));
+console.log(&amp;quot;130828199012040617&amp;quot;.match(reg));
+
+//-&amp;gt;exec：把正则匹配到的结果捕获到(包含小分组匹配的内容)
+//-&amp;gt;得到的内容首先是一个数组
+//-&amp;gt;0:&amp;quot;130828199012040617&amp;quot; -&amp;gt;大正则匹配的内容
+//-&amp;gt;1:&amp;quot;13&amp;quot; -&amp;gt;第一个分组匹配的内容
+//-&amp;gt;2:&amp;quot;0828&amp;quot; -&amp;gt;第二个分组匹配的内容
+//-&amp;gt;3:&amp;quot;1990&amp;quot; -&amp;gt;第三个分组匹配的内容
+//-&amp;gt;6:&amp;quot;1&amp;quot; -&amp;gt;第六个分组匹配的内容
+//-&amp;gt;7:&amp;quot;7&amp;quot; -&amp;gt;第七个分组匹配的内容  这个内容对于我们没有用 我们这样写(?:\d|X) -&amp;gt;?:在分
+组中的意思是：只进行规则的匹配,但是捕获的时候不进行捕获
+
+//-&amp;gt;index: 0 -&amp;gt;大正则捕获的位置在字符串中的索引
+//-&amp;gt;input: &amp;quot;130828199012040617&amp;quot; -&amp;gt;捕获的原始字符串
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;关于?的几种情况&lt;ul&gt;
+&lt;li&gt;放在非量词元字符后面,代表出现0-1次&lt;/li&gt;
+&lt;li&gt;放在量词元字符后面,代表取消捕获时候的贪婪性,例如:reg=/\d+/; reg.exec(“2014”) -&amp;gt; “2014” 但是如果正则这样写 reg=/\d+?/; reg.exec(“2014”) -&amp;gt; “2”&lt;/li&gt;
+&lt;li&gt;在分组开头加?:,代表当前的分组只是匹配不进行捕获,例如:/^(?:\d+)$/&lt;/li&gt;
+&lt;li&gt;在分组开头加?=,正向预查,例如:/^can(?=1|2)$/ 只有”can1”和”can2”才符合&lt;/li&gt;
+&lt;li&gt;在分组开头加?!,负向预查,例如:/^can(?!1|2)$/ 除了”can1”和”can2”不符合,其他的只要是”can(任何的东西)”都符合&lt;br&gt;正则的方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;正则捕获（exec）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;我们使用exec进行正则的捕获:首先判断字符串和正则是否匹配，不匹配的话，捕获到的结果为null，匹配的话,把和正则匹配的内容都捕获到。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;正则的捕获是存在懒惰性的:一个字符串中有多个都和正则匹配,但是我们执行一次exec只能捕获到第一个匹配的,再次执行exec还是只能捕获到和第一个匹配的…&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//-&amp;gt;reg.lastIndex:上一次正则捕获的结束位置/下一次捕获的起始查找位置
+//-&amp;gt;懒惰性:每一次执行exec后并没有改变它的lastIndex的值，但是即使我们自己通过reg.lastIndex = 11把其修改了,发现最后的结果并没有改变；
+
+str = &amp;quot;can2014sw2015&amp;quot;;
+console.log(reg.lastIndex);//0
+console.log(reg.exec(str));//[&amp;quot;2014&amp;quot;, index: 7, input:...]
+
+console.log(reg.lastIndex);//-&amp;gt;7
+console.log(reg.exec(str));//-&amp;gt;[&amp;quot;2015&amp;quot;, index: 9, input: &amp;quot;can2014sw2015&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;解决正则的懒惰性-&amp;gt;给正则增加修饰符g&lt;br&gt; 正则的修饰符:i(ignoreCase 忽略字母的大小写)、m(multiline 多行匹配)、g(global 全局匹配)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var str1 = &amp;quot;b c d&amp;quot;;
+var reg1 = /(^| )b( |$)/g;
+console.log(reg1.exec(str1));  //[&amp;quot;b &amp;quot;, &amp;quot;&amp;quot;, &amp;quot; &amp;quot;, index: 0, input: &amp;quot;b c d&amp;quot;]
+console.log(reg1.lastIndex);   //2
+console.log(reg1.exec(str1));  //null,往下匹配没有找到b,返回null
+console.log(reg1.lastIndex);   //0
+
+var reg2 = /(^| )b( |$)/;
+console.log(reg2.exec(str1));  //[&amp;quot;b &amp;quot;, &amp;quot;&amp;quot;, &amp;quot; &amp;quot;, index: 0, input: &amp;quot;b c d&amp;quot;]
+console.log(reg2.lastIndex);   //0
+/*********************************************************/
+
+//-&amp;gt;即使我们把正则的懒惰解决了,但是想要把所有匹配的内容都得到,我们还需要执行多次exec才可以,
+这样的话我们自己编写一个while循环,不管有多少匹配的,最后都得到
+reg = /\d+/g;
+str = &amp;quot;str2014can2015foo2016&amp;quot;;
+var ary = [];
+var res = reg.exec(str);
+while (res) {
+   ary.push(res[0]);
+   res = reg.exec(str);
+}
+console.log(ary);
+
+//在字符串中提供了一个叫做match的方法,可以执行一次就把所有匹配的内容捕获到
+reg = /\d+/g;
+str = &amp;quot;str2014can2015foo2016&amp;quot;;
+console.log(str.match(reg));//-&amp;gt;[&amp;quot;2014&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2016&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;正则的贪婪性:每一次捕获的时候,是按照匹配的最长结果进行捕获的&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;reg = /\d+/g;
+str = &amp;quot;can2014&amp;quot;;
+console.log(reg.exec(str));//-&amp;gt;[&amp;quot;2014&amp;quot;...]
+
+//解决办法:在量词元字符后面,添加一个?即可
+reg = /\d+?/g;
+str = &amp;quot;can2015&amp;quot;;
+console.log(reg.exec(str));//-&amp;gt;[&amp;quot;2&amp;quot;...]
+//注意 match的局限性:在分组捕获中,match不能捕获到小分组匹配的内容
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;正则与replace&lt;br&gt; replace的第二个参数为函数，表示以这个函数的运行结果为替换值，当这个函数运行的时候,replace方法会自动给这个函数最少传三个参数，分别是1、前边正则匹配到的结果；2、此结果在原字符串中的索引位置；3、原输入字符串，如果正则有n个分组的话，参数就有3+n个，其中正数的第一个参数为result，倒数第二个是index，最后一个是input参数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var str4 = &amp;quot;123dhue34r556de&amp;quot;;
+//第二个参数开始就是分组内容（第一个分组）
+var str5 = str4.replace(/(\d+)/g,function(result,result1){ 
+    return eval(result1.split(&amp;quot;&amp;quot;).join(&amp;quot;+&amp;quot;));
+})
+console.log(str4);//6dhue7r16de
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;正则的规则&quot;&gt;&lt;a href=&quot;#正则的规则&quot; class=&quot;headerlink&quot; title=&quot;正则的规则&quot;&gt;&lt;/a&gt;正则的规则&lt;/h2&gt;&lt;p&gt;正则用来处理字符串的规则。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;正则元字符(在两个斜杠之间包含的字符都是正则都是正则的元字符)：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;具有特殊意义的元字符&lt;br&gt; \d -&amp;gt; 匹配一个0-9的数字,相当于[0-9],和它相反的是\D -&amp;gt;匹配一个除0-9的任意字符&lt;br&gt; \w -&amp;gt; 匹配一个0-9、a-z、A-Z、&lt;em&gt;的数字或字符,相当于[0-9a-zA-Z&lt;/em&gt;]&lt;br&gt; \s -&amp;gt; 匹配一个空白字符(空格、制表符…)&lt;br&gt; \b -&amp;gt; 匹配一个单词的边界&lt;br&gt; \t -&amp;gt; 匹配一个制表符&lt;br&gt; \n -&amp;gt; 匹配一个换行&lt;br&gt; . -&amp;gt; 匹配一个除了\r\n以外的任意字符&lt;br&gt; ^ -&amp;gt; 以某一个元字符开头&lt;br&gt; $ -&amp;gt; 以某一个元字符结尾&lt;br&gt; \ -&amp;gt; 转义字符&lt;br&gt; x|y -&amp;gt; x或者y的一个&lt;br&gt; [xyz] -&amp;gt; x、y、z中的任意一个&lt;br&gt; [^xyz] -&amp;gt; 除了xyz中的任意一个字符&lt;br&gt; [a-z] -&amp;gt; 匹配a-z中的任意一个字符&lt;br&gt; [^a-z] -&amp;gt; 匹配除了a-z中的任意一个字符&lt;br&gt; () -&amp;gt; 正则中的分组
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>继承</title>
+    <link href="http://yoursite.com/2014/09/26/%E7%BB%A7%E6%89%BF/"/>
+    <id>http://yoursite.com/2014/09/26/继承/</id>
+    <published>2014-09-26T14:55:12.000Z</published>
+    <updated>2016-04-21T14:42:58.448Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;继承&quot;&gt;&lt;a href=&quot;#继承&quot; class=&quot;headerlink&quot; title=&quot;继承&quot;&gt;&lt;/a&gt;继承&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;原型链继承:它是把父类中私有的+公有的都继承到了子类原型上（子类公有的）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;B.prototype = new A;
+function A() {
+    this.x = 100;
+}
+A.prototype.getX = function () {
+    console.log(this.x);
+};
+
+function B() {
+    this.x = 200;
+}
+//想让B作为子类,继承A这个父类中的私有的/公有的属性和方法
+B.prototype = new A;
+
+var b = new B;
+b.getX();  //200
+
+//重写:子类重写父类的方法
+b.__proto__.bb=function(){} //写在B.prototype上的
+b.__proto__.__proto__.cc=function(){} //写在A.prototype上的
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;call继承：把父类私有的属性和方法克隆一份一模一样的作为子类私有的属性&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function A() {
+    this.x = 100;
+}
+
+function B() {
+    //this-&amp;gt;B的实例b
+    this.y = 200;//-&amp;gt;b.y=200;
+    A.call(this);//-&amp;gt;执行A这个方法,让里面的this关键字变为b
+}
+var b = new B;
+console.log(b.x);  // 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;冒充对象继承：把父类私有的+公有的克隆一份一模一样的作为子类私有的属性&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function A() {
+    this.x = 100;
+}
+A.prototype.getX = function () {
+    console.log(this.x);
+};
+
+function B() {
+    //this-&amp;gt;b
+    this.y = 200;
+
+    var temp = new A;//-&amp;gt;创建A的一个实例temp,它是一个对象数据类型,temp就拥有了A这个类的私有和公有的属性和方法 x:100 getX:function...
+    for (var key in temp) {//-&amp;gt;for in即可以循环temp私有的,也可以循环公有的
+        this[key] = temp[key];//-&amp;gt;第一次 b.x=temp.x=100 ...
+    }
+    temp = null;
+}
+var b = new B;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;寄生组合继承：把父类中公有的继承到了子类原型上，再把父类私有的属性和方法克隆一份一模一样的作为子类私有的属性。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function A2() {
+    this.x = 100;
+}
+A2.prototype.getX = function () {
+    console.log(this.x);
+};
+function B2() {
+    // this-&amp;gt;n
+    A2.call(this);//A.call(n) 把A执行
+}
+B2.prototype = Object.create(A2.prototype);
+B2.prototype.constructor = B2;
+//兼容方法
+function objCreate(o) {
+    function Fn() {
+    }
+
+    Fn.prototype = o;
+    return new Fn();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;中间类继承（利用到&lt;code&gt;__proto__&lt;/code&gt;，所以不兼容IE6~8）：改下内置类的&lt;code&gt;__proto__&lt;/code&gt;的指向。&lt;pre&gt;&lt;code&gt;/*argumennts排序*/
+function avgFn() {
+    arguments.__proto__=Array.prototype;
+    arguments.sort(function(a,b){
+        return a-b;
+    })
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;继承&quot;&gt;&lt;a href=&quot;#继承&quot; class=&quot;headerlink&quot; title=&quot;继承&quot;&gt;&lt;/a&gt;继承&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;原型链继承:它是把父类中私有的+公有的都继承到了子类原型上（子类公有的）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;B.prototype = new A;
+function A() {
+    this.x = 100;
+}
+A.prototype.getX = function () {
+    console.log(this.x);
+};
+
+function B() {
+    this.x = 200;
+}
+//想让B作为子类,继承A这个父类中的私有的/公有的属性和方法
+B.prototype = new A;
+
+var b = new B;
+b.getX();  //200
+
+//重写:子类重写父类的方法
+b.__proto__.bb=function(){} //写在B.prototype上的
+b.__proto__.__proto__.cc=function(){} //写在A.prototype上的
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>面向对象编程</title>
+    <link href="http://yoursite.com/2014/09/25/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"/>
+    <id>http://yoursite.com/2014/09/25/面向对象/</id>
+    <published>2014-09-25T05:05:20.000Z</published>
+    <updated>2016-04-21T15:57:13.880Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;几个面向对象的概念&quot;&gt;&lt;a href=&quot;#几个面向对象的概念&quot; class=&quot;headerlink&quot; title=&quot;几个面向对象的概念&quot;&gt;&lt;/a&gt;几个面向对象的概念&lt;/h2&gt;&lt;p&gt;对象：一个泛指，万物皆对象。&lt;br&gt;类：把对象具体的细分。&lt;br&gt;实例：某一个类别中具体的事物。&lt;br&gt;例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。&lt;br&gt;面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有这些知识（特点）&lt;/p&gt;
+&lt;h2 id=&quot;JS面向对象几种模式&quot;&gt;&lt;a href=&quot;#JS面向对象几种模式&quot; class=&quot;headerlink&quot; title=&quot;JS面向对象几种模式&quot;&gt;&lt;/a&gt;JS面向对象几种模式&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;单例模式（只能返回一个实例）:1.可以起到分组的作用；2.防止冲突&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;pre&gt;&lt;code&gt;var name = &amp;quot;danny&amp;quot;;
+var age = 20;
+var name = &amp;quot;&amp;quot;tom&amp;quot;;
+var age = 23;
+/*name与age冲突了*/
+
+/*改为单一模式*/
+/*字面量写法：*/
+var person1={
+    name : &amp;quot;danny&amp;quot;;
+    age: 10;
+}
+var person2={
+    name : &amp;quot;tom&amp;quot;;
+    age : 20;
+}
+/*person1和person2称为命名空间*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;工厂模式：不用像之前的单例模式一个个的写了，只需要开一个工厂，实现批量化的生产即可；&lt;br&gt;优点：把实现一个功能的代码封装到一个函数中，以后再想实现这个功能，不需要重新的编写这些代码了，只需要执行这个函数即可（类（函数）的封装），低耦合高内聚（减少页中的冗余代码，提高代码的重复利用率）&lt;br&gt;缺点：无法确定对象类型&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function house(size){
+    var object = {};
+    object.color = &amp;quot;red&amp;quot;；
+    object.size = size;
+    return object;
+}
+var house1 = house(100);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;构造函数模式：在工厂模式批量的生产的基础上，我们既要实现批量生产，也要实现品牌的区分(工厂模式都是属于Object类，构造函数属于构造函数类(Array类，String类，自定义类等等))。在JS中我们把品牌的区分叫做“实例识别”。  &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function House(size){
+    var num =100； /*num是构造函数执行的时候，按照普通函数执行创建的一个私有变量，和
+    我们的实例没有必然的联系：能和实例关联在一起的只有this.xxx=xxx，因为this是当前实
+    例，this.xxx=xxx相当于手动给实例增加的属性名*/
+    /*this是浏览器默认创建那个的实例*/
+    this.color=&amp;quot;red&amp;quot;;
+    this.size=size;
+    this.name=function(){console.log(&amp;quot;house&amp;quot;)};
+}
+House(); //直接运算的话就是一个普通函数
+var danny = new House(); //通过new运算符执行这个函数，这个函数就是一个类，即为构造函数
+var danny = new House; //等效于上面语句
+/*
+
+console.log(danny.color);//输出red;
+var tom = new House();
+console.log(tom.name == danny.name); 返回false
+因为每个实例都有自己的私有的属性，
+
+function Fn(){
+
+}
+var f1 = new Fn();
+//类：所有的类都是函数数据类型的 typeof Fn = &amp;quot;function&amp;quot; ,
+//typeof Array = &amp;quot;function&amp;quot; ,typeof Object = &amp;quot;function&amp;quot;
+//实例：所有的实例都是对象数据类型的typeof f1 = &amp;quot;object&amp;quot; 
+
+/*****************************************************/
+/***构造函数return情况***/
+function Fn1(){
+    this.x=10;
+    return 1;
+}
+var fn1 = new Fn1();
+console.log(fn1); //类Fn本身
+
+function Fn2(){
+    this.x=10;
+    return obj{name:&amp;quot;danny&amp;quot;
+    };
+}
+var fn2 = new Fn2();
+console.log(fn2); //obj{name:&amp;quot;danny&amp;quot;};
+
+/*浏览器会在代码执结束把当前实例默认返回，不需要自己写return，但是如果我们写了return,
+将分两种情况处理：
+1）手动返回数据类型值，那么我们返回的结果不能覆盖原有的实例
+2）手动返回的是引用数据类型的值，那么返回的结果会把浏览器默认返回的实例给覆盖掉*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;原型链模式（依赖于构造函数）：当我们通过“实例.属性”进行操作的时候，首先到实例的私有属性中进行查找，看在私有中是否存在这个属性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;如果存在的话，我们接下来我们接下来的操作都是自己当前实例私有的;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果不存在的话，通过实例的&lt;strong&gt;proto&lt;/strong&gt;找到所属类的原型上看有没有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;原型上有：我们接下来操作的都是原型上公有的&lt;/li&gt;
+&lt;li&gt;原型上没有：则继续通过原型上的&lt;strong&gt;proto&lt;/strong&gt;找到Object.prototype,看基类上是都存在，如果存在的话就用基类的，没有的话就undefined&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;所有的函数数据类型（普通函数、类）都天生自带一个属性：prototype(原型)，这个属性对应的值是一个对象数据类型的值，浏览器会给这个属性中默认开辟一个新的堆内存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;在浏览器默认给这个默认原型属性值上开辟的堆内存在中，有一个天生自带的属性：constructor(构造函数)，它的属性值是当前这个类本身(指向类的本身)。&lt;/li&gt;
+&lt;li&gt;每一个对象数据类型（普通的对象、数组、正则、prototype值）都天生自带一个属性：&lt;strong&gt;proto&lt;/strong&gt;，这个属性的值指向了当前这个对象所属类的prototype。Object是所有对象数据类型的积累，在它的原型上没有&lt;strong&gt;proto&lt;/strong&gt;属性。（注意：IE浏览器中不允许我们使用&lt;strong&gt;proto&lt;/strong&gt;这个属性）&lt;/li&gt;
+&lt;li&gt;我们构造函数某一个属性值如果是个函数，函数中的this是谁，需要看方法执行’.’之前的是谁&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;pre&gt;&lt;code&gt;function House(){
+    this.color=&amp;quot;red&amp;quot;;
+    this.size=&amp;quot;&amp;quot;;
+}
+House.prototype.name = function(){console.log(&amp;quot;name&amp;quot;)};  
+var danny = new House();
+var tom = new House();
+
+console.log(danny.__proto__.name == danny.name) //返回true
+console.log(danny.__proto__.name == tom.name) //返回true
+console.log(House.prototype.name == danny.name) //返回true
+/*House的prototype属性，即prototype指针指向一个公有区域，其他实例也有一个__proto__属性，
+即__proto__指针也都指向公有区域，这个公有区域就是共享区域。这里的实例为Danny和Tom，所以我
+们可以得到等式：House.prototype=danny.__proto__=tom.__proto__*/
+/************************************************************************/
+
+function House(){
+    this.color=&amp;quot;red&amp;quot;;
+    this.size=&amp;quot;&amp;quot;;
+}
+House.prototype.print = function(){console.log(this.color)};  
+var danny = new House();
+var tom = new House();
+danny.__proto__.print();  //undefined    --1
+danny.print();  //red                    --2
+/*1和2的print中的this分别指的是不同对象，1中print()的this指的是danny.__proto__,2中
+print()指的是danny因为danny.__proto__指的是House的原型（prototype），因为在House的
+原型（prototype）上没有color属性，因此会通过本身的__ptoto__往上级寻找color属性，由于
+所有的对象数据类型都是Object的实例，因此House的原型（prototype的__ptoto__指向Object
+的原型（prototype），又由于Object的原型（prototype）也没有color属性，所有最终输出
+undefined。2中的danny实例中有color属性，因此打印出red*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;###基于内置类的原型拓展方法，我们需要注意的事项：我们自己的方法名加上特殊的前缀，防止把内置的方法覆盖掉。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/************************************************************************/
+//原型链在内置内的应用
+//数组重写pop方法
+Array.prototype.pop = function() {
+    this.length--;
+}
+
+//数组增加数组去从方法
+Array.prototype.myUnique = function unique() {
+    //this-&amp;gt;ary 当前要操作的那个数组
+    var obj = {};
+    for (var i = 0; i &amp;lt; this.length; i++) {
+        var cur = this[i];
+        if (obj[cur] == cur) {
+            this[i] = this[this.length - 1];
+            this.length--;
+            i--;
+            continue;
+        }
+        obj[cur] = cur;
+    }
+    obj = null;
+
+    return this;//把去重后的数组返回,这样就可以实现链式写法了
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;几个面向对象的概念&quot;&gt;&lt;a href=&quot;#几个面向对象的概念&quot; class=&quot;headerlink&quot; title=&quot;几个面向对象的概念&quot;&gt;&lt;/a&gt;几个面向对象的概念&lt;/h2&gt;&lt;p&gt;对象：一个泛指，万物皆对象。&lt;br&gt;类：把对象具体的细分。&lt;br&gt;实例：某一个类别中具体的事物。&lt;br&gt;例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。&lt;br&gt;面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有这些知识（特点）&lt;/p&gt;
+&lt;h2 id=&quot;JS面向对象几种模式&quot;&gt;&lt;a href=&quot;#JS面向对象几种模式&quot; class=&quot;headerlink&quot; title=&quot;JS面向对象几种模式&quot;&gt;&lt;/a&gt;JS面向对象几种模式&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;单例模式（只能返回一个实例）:1.可以起到分组的作用；2.防止冲突&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DOM</title>
+    <link href="http://yoursite.com/2014/09/23/DOM/"/>
+    <id>http://yoursite.com/2014/09/23/DOM/</id>
+    <published>2014-09-23T05:30:13.000Z</published>
+    <updated>2016-04-22T01:19:30.097Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;获取页面中元素的方法&quot;&gt;&lt;a href=&quot;#获取页面中元素的方法&quot; class=&quot;headerlink&quot; title=&quot;获取页面中元素的方法  &quot;&gt;&lt;/a&gt;获取页面中元素的方法  &lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;获取ID操作： &lt;code&gt;getElementById(&amp;quot;元素ID&amp;quot;)&lt;/code&gt;  &lt;ol&gt;
+&lt;li&gt;如果页面上有重复项的ID，这个方法只能获得第一个ID的元素。&lt;/li&gt;
+&lt;li&gt;在IE6、7中，会把表单（input）中的name当做ID值。  &lt;/li&gt;
+&lt;li&gt;在IE6、7中，不区分ID的大小写。     &lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;通过元素的标签，来获取一组元素：&lt;code&gt;getElementsByTagName(&amp;quot;标签名&amp;quot;)&lt;/code&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;通过表单属性（input）获取一组元素：&lt;code&gt;getElementsByName(&amp;quot;s属性值&amp;quot;)&lt;/code&gt;                &lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;通过类别名来获取一组元素：&lt;code&gt;getElementsByClassName(&amp;quot;类别名&amp;quot;)&lt;/code&gt;&lt;ol&gt;
+&lt;li&gt;IE6、7、8不兼容。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;获取Html和body元素：&lt;code&gt;document.documentElement()；document.body()&lt;/code&gt;&lt;ol&gt;
+&lt;li&gt;获取页面宽度兼容所有浏览器的方法：&lt;code&gt;document.documentElement.clientWidth || document.body.clientWidth&lt;/code&gt;&lt;p&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;在移动端获取元素常用的方法 &lt;ol&gt;
+&lt;li&gt;&lt;code&gt;document.querySelector()&lt;/code&gt; 获得某一元素&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;document.querySelectorAll()&lt;/code&gt; 获得一组元素&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;节点操作&quot;&gt;&lt;a href=&quot;#节点操作&quot; class=&quot;headerlink&quot; title=&quot;节点操作&quot;&gt;&lt;/a&gt;节点操作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;主要分类&lt;ol&gt;
+&lt;li&gt;元素节点：HTML标签&lt;/li&gt;
+&lt;li&gt;文本节点：文字，在浏览器（除了IE6~8）中会把空格和换行都当做文本节点来处理&lt;/li&gt;
+&lt;li&gt;注释节点：注释&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;节点特征&lt;ol&gt;
+&lt;li&gt;元素节点：nodeType-&amp;gt;1，nodeName-&amp;gt;大写的标签名，nodeValue-&amp;gt;null&lt;/li&gt;
+&lt;li&gt;文本节点：nodeType-&amp;gt;3，nodeName-&amp;gt;#text，nodeValue-&amp;gt;文本内容&lt;/li&gt;
+&lt;li&gt;注释节点：nodeType-&amp;gt;8，nodeName-&amp;gt;#comment，nodeValue-&amp;gt;注释内容&lt;/li&gt;
+&lt;li&gt;文档节点：nodeType-&amp;gt;9&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;节点关系操作&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;获取父亲节点：&lt;code&gt;parentNode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取上一个哥哥节点：&lt;code&gt;previousSibling&lt;/code&gt;（可能是元素也可能是文本或者注释）&lt;/li&gt;
+&lt;li&gt;获取上一个哥哥元素节点：&lt;code&gt;previousElementSibling&lt;/code&gt;(IE6~8不兼容)&lt;/li&gt;
+&lt;li&gt;获取下一个弟弟节点:&lt;code&gt;nextSibling&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取下一个元素弟弟节点:&lt;code&gt;nextElementSibling&lt;/code&gt;(IE6~8不兼容)&lt;/li&gt;
+&lt;li&gt;获取所有子节点中的第一个:&lt;code&gt;firstChild&lt;/code&gt;(可能是元素也可能是文本或者注释)&lt;/li&gt;
+&lt;li&gt;获取所有元素子节点中的第一个：&lt;code&gt;firstElementChild&lt;/code&gt;(IE6~8不兼容)&lt;/li&gt;
+&lt;li&gt;获取所有子节点中的最后一个:&lt;code&gt;lastChild&lt;/code&gt;(可能是元素也可能是文本或者注释)&lt;/li&gt;
+&lt;li&gt;获取所有元素子节点中的最后一个:&lt;code&gt;lastElementChild&lt;/code&gt;(IE6~8不兼容)&lt;/li&gt;
+&lt;li&gt;获取所有的子节点:&lt;code&gt;childNodes&lt;/code&gt;(可能是元素也可能是文本或者注释)&lt;/li&gt;
+&lt;li&gt;获取所有的元素节点:&lt;code&gt;children&lt;/code&gt;(IE6~8不兼容)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;DOM的动态操作&quot;&gt;&lt;a href=&quot;#DOM的动态操作&quot; class=&quot;headerlink&quot; title=&quot;DOM的动态操作&quot;&gt;&lt;/a&gt;DOM的动态操作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;创建元素节点：&lt;code&gt;document.createElement()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;创建文本节点：&lt;code&gt;document.createTextElement()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;添加元素在cotex容器中的最后一项：&lt;code&gt;appendChild()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;添加某元素之前:&lt;code&gt;contex.insertBefore(oDiv2, oDiv1)&lt;/code&gt;(在contex内将oDiv2放在oDiv1的前面)&lt;/li&gt;
+&lt;li&gt;克隆元素对象：&lt;code&gt;oDov2 = oDiv1.cloneNode(bol)&lt;/code&gt;将oDiv1克隆给oDiv2(bol为true时，把当前元素及里面的内容都克隆；bol为flase时，只克隆当前的元素)&lt;/li&gt;
+&lt;li&gt;替换元素：&lt;code&gt;contex.replaceChid(oDiv2, oDiv1)&lt;/code&gt;(在contex内用oDiv2替换oDiv1,oDov2所在的原有位置也不见了)&lt;/li&gt;
+&lt;li&gt;移除元素：&lt;code&gt;contex.removeChild()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;设置属性(IE6~8不支持，且下列操作只能以以下搭配使用，即如果通过setAttribute添加属性，就必须通过getAttribute获得属性)&lt;ol&gt;
+&lt;li&gt;添加属性：&lt;code&gt;Ele(元素).setAttribute(属性名，属性值)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;读取相应属性值：&lt;code&gt;getAttribute(属性名)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除属性：&lt;code&gt;removeAttribute(属性名)&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;获取页面中元素的方法&quot;&gt;&lt;a href=&quot;#获取页面中元素的方法&quot; class=&quot;headerlink&quot; title=&quot;获取页面中元素的方法  &quot;&gt;&lt;/a&gt;获取页面中元素的方法  &lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;获取ID操作： &lt;code&gt;getElementById(&amp;quot;元素ID&amp;quot;)&lt;/code&gt;  &lt;ol&gt;
+&lt;li&gt;如果页面上有重复项的ID，这个方法只能获得第一个ID的元素。&lt;/li&gt;
+&lt;li&gt;在IE6、7中，会把表单（input）中的name当做ID值。  &lt;/li&gt;
+&lt;li&gt;在IE6、7中，不区分ID的大小写。     &lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;通过元素的标签，来获取一组元素：&lt;code&gt;getElementsByTagName(&amp;quot;标签名&amp;quot;)&lt;/code&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>THIS关键字总结</title>
+    <link href="http://yoursite.com/2014/09/22/THIS%E5%85%B3%E9%94%AE%E5%AD%97%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2014/09/22/THIS关键字总结/</id>
+    <published>2014-09-22T05:17:34.000Z</published>
+    <updated>2016-04-22T01:20:41.239Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;this关键字&quot;&gt;&lt;a href=&quot;#this关键字&quot; class=&quot;headerlink&quot; title=&quot;this关键字&quot;&gt;&lt;/a&gt;this关键字&lt;/h2&gt;&lt;p&gt;this表示当前运行方法的主体，函数中的this指向和当前函数在哪定义的话或者在哪执行都没有任何的关系。&lt;/p&gt;
+&lt;h2 id=&quot;this的上下文&quot;&gt;&lt;a href=&quot;#this的上下文&quot; class=&quot;headerlink&quot; title=&quot;this的上下文&quot;&gt;&lt;/a&gt;this的上下文&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自制行函数里面的this永远都是window&lt;pre&gt;&lt;code&gt;var inner = &amp;quot;window&amp;quot;;  
+var obj = {inner : &amp;quot;obj&amp;quot;,  
+          fn : (function () {console.log(this.inner)})()  
+}  
+/*上面浏览器在运行该程序时，会自动运行obj.fn里面的方法，因为obj.fn是一个自制行函数，当执
+行该函数时，程序会输出window。
+为什么输出不是obj？
+因为人家规定自制行函数里面的this是window,所以其实this.inner就是window.inner，因此这个
+inner是定义在全局变量的，它的值是&amp;quot;window&amp;quot;。*/
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;元素绑定事件驱动方法运行，方法里的this表示当前绑定的元素&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var oDiv = document.getElementsByTagName(&amp;quot;div&amp;quot;)[0];  
+oDiv.onclick=function(){  
+    console.log(this);   //当用鼠标点击该元素，则输出oDiv元素的集合  
+};
+/*元素绑定某个行为执行的方法，就相当于把这个方法也绑定在这个元素上，所以this也就指向元素
+本身。*/  
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;方法执行，看方法名前面是否有”.”，有的话”.”前面是谁this就是谁，没有的话this就是window&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var obj={fn:fn};  
+function fn(){console.log(this)}  
+fn.prototype.aa=function(){console.log(this)};  
+var f=new fn;  
+fn();  //window..  
+obj.fn(); //Object..  
+fn.prototype.aa(); //fn.prototype  
+f.aa(); //f  
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;在构造函数模式中,函数体中的this是当前类的一个实例&lt;pre&gt;&lt;code&gt;function Fn(){  
+    this.x = 100;  
+    console.log(this);  // 实例 f  
+}  
+var f = new Fn; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;call/apply来改变this的指向&lt;pre&gt;&lt;code&gt;var oDiv = document.getElementsByTagName(&amp;quot;div&amp;quot;)[0];  
+function fn() {  
+    console.log(this);  
+}  
+fn.call(oDiv);
+/*fn.call(oDiv); //执行这个语句后，fn里面的this指向oDiv元素，applay用法与call类似。*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;练习题&quot;&gt;&lt;a href=&quot;#练习题&quot; class=&quot;headerlink&quot; title=&quot;练习题&quot;&gt;&lt;/a&gt;练习题&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;var num=10;
+var obj = {
+    num: 20,
+    fn: (function(num){
+        this.num *= 2;
+        num　+= 10;     //形参形成自己的私有作用域
+        return function(){
+            this.num *= 3;
+            num += 1;
+            console.log(num);
+        }
+    })(num)  //从window.num传进来
+};
+
+var fn = obj.fn;
+fn();   //21
+obj.fn(); //22
+console.log(window.num);//60
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;this关键字&quot;&gt;&lt;a href=&quot;#this关键字&quot; class=&quot;headerlink&quot; title=&quot;this关键字&quot;&gt;&lt;/a&gt;this关键字&lt;/h2&gt;&lt;p&gt;this表示当前运行方法的主体，函数中的this指向和当前函数在哪定义的话或者在哪执行都没有任何的关系。&lt;/p&gt;
+&lt;h2 id=&quot;this的上下文&quot;&gt;&lt;a href=&quot;#this的上下文&quot; class=&quot;headerlink&quot; title=&quot;this的上下文&quot;&gt;&lt;/a&gt;this的上下文&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自制行函数里面的this永远都是window&lt;pre&gt;&lt;code&gt;var inner = &amp;quot;window&amp;quot;;  
+var obj = {inner : &amp;quot;obj&amp;quot;,  
+          fn : (function () {console.log(this.inner)})()  
+}  
+/*上面浏览器在运行该程序时，会自动运行obj.fn里面的方法，因为obj.fn是一个自制行函数，当执
+行该函数时，程序会输出window。
+为什么输出不是obj？
+因为人家规定自制行函数里面的this是window,所以其实this.inner就是window.inner，因此这个
+inner是定义在全局变量的，它的值是&amp;quot;window&amp;quot;。*/
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>作用域与闭包</title>
+    <link href="http://yoursite.com/2014/09/20/%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/"/>
+    <id>http://yoursite.com/2014/09/20/作用域与闭包/</id>
+    <published>2014-09-20T04:02:23.000Z</published>
+    <updated>2016-04-20T04:34:46.225Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;作用域&quot;&gt;&lt;a href=&quot;#作用域&quot; class=&quot;headerlink&quot; title=&quot;作用域&quot;&gt;&lt;/a&gt;作用域&lt;/h1&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;全局作用域与私有作用域&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。&lt;/li&gt;
+&lt;li&gt;函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，如果是私有的，那么我们接下来的所有操作都是用的自己私有的，和外面的没有任何的关系；如果不是自己私有的，则去当前作用域的上一级作用域中查找，如果上一级有，那么接下来操作的，都是操作上级作用域的变量；如果上级也没有，则继续向上查找，一直找到window为止。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;###注意：如果在window还没有找到，如果是 变量=值 相当于给window下增加一个属性名（变量）和属性值（值），如果是console.log(变量)，则报错。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var a;
+function fn(){
+    b=10; //不会报错，得到window.b = 10;
+}
+/*******************************************/
+
+var a=10;
+fn();
+function fn(){
+    console.log(b);  //报错，b未定义
+    /*以下代码不会执行了*/
+    b=10;
+    console.log(a);  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如何判断变量是否为私有的：符合以下两个条件之一，变量就是私有作用域的。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;看变量是否为形参&lt;/li&gt;
+&lt;li&gt;看是都在私有作用域声明过（是否有var关键字）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;公有作用域与私有作用域关系&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var num = 10;
+function fn1(){
+    console.log(num);
+}
+fn1(); //输出10；
+/******************************/
+
+function fn2(){
+    console.log(num);
+    var num = 10;
+
+}
+fn1(); //输出undefined；
+/*如果当前作用域有声明变量，则这个变量与它所有上级作用域无关； 
+如果当前作用域有声明变量,则往上级寻找变量声明，直到找到为止就停止，如果没找到，浏览器就报错。*/
+/******************************/
+
+console.log(str, num);   //undefined,,undefined
+var str =&amp;quot;danny&amp;quot;;
+var num = 33;
+function fn(){
+    console.log(str, num);  //danny,undefined
+    num = 22;
+    str = &amp;quot;tom&amp;quot;;
+    var num = 10;
+    console.log(str, num);  //tom,10
+}
+fn();
+console.log(str, num);   //tom, 33
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;闭包&quot;&gt;&lt;a href=&quot;#闭包&quot; class=&quot;headerlink&quot; title=&quot;闭包&quot;&gt;&lt;/a&gt;闭包&lt;/h1&gt;&lt;hr&gt;
+&lt;p&gt;当函数执行的时候，会产生一个私有作用域，这个私有作用域成为闭包，闭包是方法运行的一种机制，可以保护变量或方法不受污染。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;自执行函数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; for(var i=0; i&amp;lt;10 ;i++){
+     var a = 8;
+ }
+ console.log(i); //i存在，等于10；
+ console.log(a); //输出8
+ /*在js中，没有块级作用域的概念，因此可以输出i和a*/
+ /*****************************************/
+
+~(function fn(){
+     for(var i=0; i&amp;lt;10 ;i++){
+         var a = 8;
+     }
+ })()
+ console.log(i); //报错
+ console.log(a); //报错
+ /*fn是闭包，在js中，没有块级作用域的概念，可以通过闭包来模拟块作用域。*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;方法能够访问上级作用域中的变量和函数，这个方法就是闭包的一种&lt;pre&gt;&lt;code&gt;function A(){
+    fuction B(){}
+    return function C(){}
+}
+/*B和C都是闭包*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;作用域的销毁&quot;&gt;&lt;a href=&quot;#作用域的销毁&quot; class=&quot;headerlink&quot; title=&quot;作用域的销毁&quot;&gt;&lt;/a&gt;作用域的销毁&lt;/h1&gt;&lt;hr&gt;
+&lt;p&gt;全局作用下定义的变量或者对象是不销毁的，关闭浏览器的时候可以被销毁，也可以人为销毁变量（利用浏览器的垃圾回收机制&lt;code&gt;var obj={xx}; obj=null;&lt;/code&gt;//解除引用，obj指向的全局对象便会释放掉，obj变等浏览器会通过回收机制去检测找到后才可以销毁）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;堆内存释放：定义一个引用数据类型值就会产生一个堆内存块,如果外面有一个变量存储了这个地址，我们就说当前的堆内存被占用了，也就不能销毁了；如果让变量的值等于null，之前被占用的堆内存现在没有人占用了，浏览器会在空闲的时候把这个堆内存清理掉。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/*定义一个引用数据类型值就会产生一个堆内存块*/
+var obj = {name: &amp;quot;a&amp;quot;}; //产生一个堆内存块xx
+obj = null; /*null是一个空指针,则xx内存块没有被别人占用，所以浏览器会在空闲的时候将xx内存
+块给释放掉*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;栈内存释放&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;全局作用域：不销毁的作用域，打开页面的时候形参，只有关掉的页面才会销毁；&lt;/li&gt;
+&lt;li&gt;私有作用域：函数执行就会形成一个私有作用域，私有作用域的销毁情况如下；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;私有作用域销毁情况：&lt;ol&gt;
+&lt;li&gt;立即销毁：一般情况下，函数执行一次就会形成一个私有的作用域，接下来开始形参赋值、预解释、代码执行…，当代码执行完成后，我们当前函数执行的目的已经达到了，A也没有用了，浏览器为了节省内存空间，会自动把A释放掉。&lt;/li&gt;
+&lt;li&gt;不销毁：方法内部的内容被外部环境的变量或者方法所占有，这样这个方法就释放不了了。一般表现形式：一个函数返回一个引用数据类型，并且将这个引用数据类型赋给外部的全局变量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;pre&gt;&lt;code&gt;functon fn(){
+    var num = 10;
+    return function(){
+        num++;
+        console.log(num);
+    }
+}
+var f = fn();
+fn();  //11
+fn();  //12
+fn();  //13
+/*全局变量f绑定了fn的返回方法，因此fn方法不能被销毁*/
+/***************************************/
+
+/*-------------------------------------*/
+
+/*利用闭包实现每次点击，i进行累加,oDiv为div元素*/
+
+//方法一：
+...
+oDiv.onclick = (function(){
+    var i=0;
+    return function(){
+        oDiv.innerHTML = ++i;
+    }
+})()
+//方法二：
+~(function(){
+    var i=0;
+    oDiv.onclick = function(){
+        oDiv.innerHTML = ++i;
+    }
+})()
+/*-------------------------------------*/
+//方法三：    
+oDiv.onclick = (function(){
+    var i=0;
+    return function(){
+     /*   fn(i); //实现不了累加，因为fn只对形参进行累加，
+                 //所以i每次初始值都是为0，需要把fn里面的i
+                 //的累加值赋值给上面的i值，才可以实现。*/
+
+          i=fn(i);
+    }
+})()
+
+function fn(i){
+    oDiv.innerHTML = ++i;
+    return i;
+}
+/*-------------------------------------*/
+//方法四：
+oDiv.onclick = function{
+    oDiv.innerHTML ++;
+}    
+/*-------------------------------------*/
+//方法五：
+oDiv.count = 0;
+oDiv.onclick = function{
+    oDiv.innerHTML = ++this.count;
+}    
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;不立即销毁：fn方法返回的引用地址并没有被其他作用域占有，按理说应该销毁，但是后面有让这个返回的方法运行，所以fn暂时不能销毁，得让返回的匿名方法运行完了之后fn才被销毁。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;functon fn(){
+    var num = 10;
+    return function(){
+        num++;
+        console.log(num);
+    }
+}
+f()();
+/*f()()需要等待返回方法执行完后才可以销毁fn()*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;作用域&quot;&gt;&lt;a href=&quot;#作用域&quot; class=&quot;headerlink&quot; title=&quot;作用域&quot;&gt;&lt;/a&gt;作用域&lt;/h1&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;全局作用域与私有作用域&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JS运行在浏览器中的客户端脚本编程语言，当浏览器加载HTML页面的时候首先会提供一个供JS代码的环境，我们把它称之为全局作用域。&lt;/li&gt;
+&lt;li&gt;函数执行的时候，目的是为了让定义时候存储的那些代码字符串变成真正的代码去执行，因此执行的时候会产生一个私有作用域，供这些代码去执行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;作用域链：在私有作用域中，JS代码从上到下执行，如果遇到了一个变量，首先看是否是自己私有的变量，如果是私有的，那么我们接下来的所有操作都是用的自己私有的，和外面的没有任何的关系；如果不是自己私有的，则去当前作用域的上一级作用域中查找，如果上一级有，那么接下来操作的，都是操作上级作用域的变量；如果上级也没有，则继续向上查找，一直找到window为止。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>预解释</title>
+    <link href="http://yoursite.com/2014/09/19/%E9%A2%84%E8%A7%A3%E9%87%8A/"/>
+    <id>http://yoursite.com/2014/09/19/预解释/</id>
+    <published>2014-09-19T07:22:43.000Z</published>
+    <updated>2016-04-21T15:57:53.857Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;预解释&quot;&gt;&lt;a href=&quot;#预解释&quot; class=&quot;headerlink&quot; title=&quot;预解释&quot;&gt;&lt;/a&gt;预解释&lt;/h2&gt;&lt;p&gt;预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined&lt;/li&gt;
+&lt;li&gt;定义：给变量赋值（eg num=10;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会定义赋值&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;pre&gt;&lt;code&gt;console.log(num); //undefined
+var num = 10;
+console.log(num); //10
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;在预解释阶段，带function关键字的声明+定义两部分都完成了&lt;pre&gt;&lt;code&gt;console.log(fn); //function fn(){console.log(&amp;quot;ok&amp;quot;);}
+function fn(){
+    console.log(&amp;quot;ok&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;  注意：函数执行的步骤：&lt;ol&gt;
+&lt;li&gt;首先给函数的形参进行赋值&lt;/li&gt;
+&lt;li&gt;对var和function进行预解释&lt;/li&gt;
+&lt;li&gt;私有作用域中的代码从上到下执行&lt;p&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;预解释时遇到重复变量名会忽略掉声明 &lt;pre&gt;&lt;code&gt;var a=12; //预解释a,即在内存中声明a
+var a;    //重复用var声明变量名了，忽略掉本次a的预解释声明
+var a=15; //同时，忽略本次a的预解释声明
+/*由于预解释是发生在代码运行之前的，因此代码执行的时候会已经声明的变量名根据式子进行
+相应的复制，所以最后a复制为15*/
+console.log(a); //输出15
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;重名变量带初始值（相当于做了赋值表达式的运算）:&lt;br&gt;在预解释阶段，如果变量或者函数名已经声明过了，那么不会重新的进行声明，但是在预解释阶段，需要重新的赋值。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;console.log(b);                --1   //输出&amp;quot;function b(){ console.log(&amp;quot;hello&amp;quot;) }&amp;quot;
+var b=10;                      --2
+function b(){                  --3
+    console.log(&amp;quot;hello&amp;quot;);      --4
+}
+console.log(b);                     //输出10
+/*浏览器在执行代码前先找到var关键字进行预解释，因此浏览器会对2，3的变量进行预解释，但是
+第3行的变量名与第2行的变量名重名了，所以第3行的变量名忽略声明，但是由于第3行为function，
+因此预解释第3行的时候，虽然忽略掉变量声明，但是会进行赋值操作，所以变量b此时被赋值为方法b。
+因此代码执行到1的时候，输出方法b，执行到2的时候，b进行赋值的操作，此时b值为2，所以执行到4
+的时候，输出10*/
+/*********************************************************/
+
+fn();       // 2
+function fn(){console.log(1);}
+fn();       // 2
+var fn = 13;
+fn();       //报错，代码停止
+function fn(){console.log(2);}
+fn();
+/*在全局作用域下声明的变量或者函数相当于给window增加了一个属性名，由于JS中规定一个对象的属
+性名是不能重复，所以函数名字如果和变量的名字一样，也算是冲突。*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;function不预解释的情况（函数作为一个值得时候）：&lt;br&gt;“=”是赋值操作，等号左边是变量，右边是常量（值），所以预解释的只对等号左边的变量进行预解释，不管右边的值    &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;f(); //报错
+var f = function(){console.log(&amp;quot;hello&amp;quot;)};
+/*函数表达式*/
+/******************************/
+
+sum(); //报错
+(function sum(){console.log(&amp;quot;hello&amp;quot;)})()    //一般不写函数名，去掉sum()
+/*自执行函数*/
+/******************************/
+
+function  fn(){
+    console.log(sum);  //报错
+    return functon sum(){};
+}
+/******************************/
+
+var num = 20;
+function  fn(){
+    console.log(num);
+    return function sum(){};
+    var num=10;
+}
+fn();//输出undefined;
+/*在私有作用域中，虽热return下面代码不执行了，但是要进行预解释*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;练习题&quot;&gt;&lt;a href=&quot;#练习题&quot; class=&quot;headerlink&quot; title=&quot;练习题&quot;&gt;&lt;/a&gt;练习题&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;if(!(&amp;quot;a&amp;quot; in window)){   //判断a是否属于window的属性
+    var a = &amp;quot;hello&amp;quot;;
+}
+console.log(a); //输出undefined；
+/*只要定义在全局下的变量，就属于window的属性*/
+
+/**************************************************/
+
+fn();  //输出hello
+if(1==0){
+    function fn(){console.log(&amp;quot;hello&amp;quot;)}
+}
+/*fn已经预解释了，所以输出hello*/
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;预解释&quot;&gt;&lt;a href=&quot;#预解释&quot; class=&quot;headerlink&quot; title=&quot;预解释&quot;&gt;&lt;/a&gt;预解释&lt;/h2&gt;&lt;p&gt;预解释（变量提升）：在当前的作用域中，JS代码从上到下执行的时候，浏览器会默认的先把所有带var/functon关键字进行提前的声明或者定义。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;声明：告诉浏览器在当前的作用域中有一个名字叫做num(var num;)，只声明没有定义的话，默认的值是undefined&lt;/li&gt;
+&lt;li&gt;定义：给变量赋值（eg num=10;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;在预解释阶段，带var关键字的只是提前的声明，只有在JS从上到下执行的时候才会定义赋值
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>

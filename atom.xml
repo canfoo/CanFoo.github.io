@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-05-05T00:11:11.743Z</updated>
+  <updated>2016-05-07T08:16:24.583Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2015/07/26/gulp%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/"/>
     <id>http://yoursite.com/2015/07/26/gulp构建工具/</id>
     <published>2015-07-26T04:10:55.000Z</published>
-    <updated>2016-05-05T00:11:11.743Z</updated>
+    <updated>2016-05-07T08:16:24.583Z</updated>
     
     <content type="html">&lt;h2 id=&quot;gulp介绍&quot;&gt;&lt;a href=&quot;#gulp介绍&quot; class=&quot;headerlink&quot; title=&quot;gulp介绍&quot;&gt;&lt;/a&gt;gulp介绍&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;什么是gulp&lt;br&gt;Gulp是可以自动化执行任务的工具。在平时开发的流程里面，一定有一些动作需要手工的重复的去执行，比如:&lt;ul&gt;
@@ -32,8 +32,64 @@
 &lt;li&gt;创建一个可以实时刷新页面内容的本地服务器等等。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;全局安装gulp&lt;pre&gt;&lt;code&gt;npm install -g gulp
-&lt;/code&gt;&lt;/pre&gt;安装完成后可以输入 &lt;code&gt;gulp --help&lt;/code&gt;&lt;br&gt;如果输出一些帮助的信息就表示可以gulp命令行成功安装了&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;全局安装gulp&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -g gulp
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装完成后可以输入 &lt;code&gt;gulp --help&lt;/code&gt;&lt;br&gt;如果输出一些帮助的信息就表示可以gulp命令行成功安装了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;项目下安装gulp&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先创建一个目录&lt;br&gt;在 mac 和 linux 操作系统下执行&lt;pre&gt;&lt;code&gt;mkdir learngulp
+&lt;/code&gt;&lt;/pre&gt;在 windows 操作系统下执行&lt;pre&gt;&lt;code&gt;md learngulp
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;进入目录&lt;pre&gt;&lt;code&gt;cd learngulp
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建项目描述文件 package.json&lt;br&gt;npm，需要一个叫 package.json 的文件来管理依赖，可以手工去创建这个文件，也可以使用 npm init 这个命令。 输入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm init
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输入一些问题答案&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;name: (zhufeng_automation) learngulp //项目名字，npm init会自动取当前目录名作为默认名字，这里不需要改，直接确认即可
+version: (1.0.0) 1.0.0   //项目版本号，这个大家按自己习惯来定就可以
+description: learn gulp //项目说明
+entry point: (index.js) index.js // 入门文件 npm start 会执行此文件
+test command: test.js //测试脚本 npm test 会执行此文件
+git repository: (https://github/zhufengpeixun/zhufeng_automation.git) //模块的git仓库，选填。npm的用户一般都使用github做为自己的git仓库
+keywords: node.js gulp  //在npmjs官网搜索时的关键字
+author: zhangrenyang //项目作者名字
+license: (ISC) MIT //授权协议
+About to write to D:\mygit\zhufeng_automation\package.json:
+
+{
+  &amp;quot;name&amp;quot;: &amp;quot;learngulp&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot;,
+  &amp;quot;description&amp;quot;: &amp;quot;learn gulp&amp;quot;,
+  &amp;quot;main&amp;quot;: &amp;quot;index.js&amp;quot;,
+  &amp;quot;dependencies&amp;quot;: {
+    &amp;quot;gulp&amp;quot;: &amp;quot;^3.9.0&amp;quot;
+  },
+  &amp;quot;devDependencies&amp;quot;: {},
+  &amp;quot;scripts&amp;quot;: {
+    &amp;quot;test&amp;quot;: &amp;quot;test.js&amp;quot;
+  },
+  &amp;quot;repository&amp;quot;: {
+    &amp;quot;type&amp;quot;: &amp;quot;git&amp;quot;,
+    &amp;quot;url&amp;quot;: &amp;quot;https://git.coding.net/zhufengpeixun/zhufeng_automation.git&amp;quot;
+  },
+  &amp;quot;keywords&amp;quot;: [
+    &amp;quot;node.js&amp;quot;,
+    &amp;quot;gulp&amp;quot;
+  ],
+  &amp;quot;author&amp;quot;: &amp;quot;zhangrenyang&amp;quot;,
+  &amp;quot;license&amp;quot;: &amp;quot;MIT&amp;quot;
+}
+Is this ok? (yes) yes //对以上内容确认无误后，就可以直接回车确认了
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  回车后会在当前目录下创建一个 package.json 文件&lt;br&gt;  这样可以把 gulp 作为项目的开发依赖(只在开发时用，不会发布到线上)，通过&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install gulp --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  在node_modules下安装本地的gulp库并把添加配置到 package.json 文件里面。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;devDependencies&amp;quot;: {
+    &amp;quot;gulp&amp;quot;: &amp;quot;^3.9.0&amp;quot;
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;gulp基础操作&quot;&gt;&lt;a href=&quot;#gulp基础操作&quot; class=&quot;headerlink&quot; title=&quot;gulp基础操作&quot;&gt;&lt;/a&gt;gulp基础操作&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;工作流程&lt;br&gt;gulp的使用流程一般是：首先通过gulp.src()方法获取到想要处理的文件流，&lt;br&gt;然后把文件流通过pipe方法导入到gulp的插件中，&lt;br&gt;最后把经过插件处理后的流再通过pipe方法导入到gulp.dest()中，&lt;br&gt;gulp.dest()方法则把流中的内容写入到文件中。例如：&lt;/p&gt;
@@ -178,6 +234,24 @@ gulp.task(&amp;apos;minify&amp;apos;,function(){
 });
 
 gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;less&amp;apos;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;ggulp-imagemin：压缩图片&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装插件&lt;pre&gt;&lt;code&gt;npm install gulp-minify-css --save-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var gulp = require(&amp;apos;gulp&amp;apos;);
+var imagemin = require(&amp;apos;gulp-imagemin&amp;apos;);
+
+gulp.task(&amp;apos;copy-images&amp;apos;,function(){
+    return gulp.src(&amp;apos;app/imgs/**/*.{jpg,png}&amp;apos;)//指定要压缩的图片
+        .pipe(imagemin()) //进行图片压缩
+        .pipe(gulp.dest(&amp;apos;dist&amp;apos;));//输出目的地
+});
+
+gulp.task(&amp;apos;default&amp;apos;,[&amp;apos;copy-images&amp;apos;]);
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;

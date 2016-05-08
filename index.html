@@ -241,6 +241,111 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/20/数据类型检测/" itemprop="url">
+                  数据类型检测
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-10-20T23:10:55+08:00" content="2015-10-20">
+              2015-10-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="几种数据类型检测的方式"><a href="#几种数据类型检测的方式" class="headerlink" title="几种数据类型检测的方式"></a>几种数据类型检测的方式</h2><ul>
+<li><p>typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。</p>
+<pre><code>console.log(typeof 1); //Number
+console.log(typeof &quot;sss&quot;); //Number
+console.log(typeof true); //Number
+</code></pre><p>  局限性：不能具体的细分是数组还是正则，还是对象中其他的值，因为使用typeof检测数据类型，对于对象数据中的左右的值，最后返回的结果都是”object”</p>
+<pre><code>console.log(typeof null); // &quot;object&quot;
+console.log(typeof [2,3]); // &quot;object&quot;
+console.log(typeof /\d/); // &quot;object&quot;
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/20/数据类型检测/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/07/26/gulp构建工具/" itemprop="url">
                   gulp构建工具
                 </a>
@@ -344,8 +449,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/26/JSONP模拟百度搜索功能/" itemprop="url">
-                  JSONP模拟百度搜索栏功能
+                <a class="post-title-link" href="/2015/07/08/观察者模式/" itemprop="url">
+                  观察者模式
                 </a>
               
             
@@ -358,8 +463,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-26T21:10:55+08:00" content="2015-03-26">
-              2015-03-26
+            <time itemprop="dateCreated" datetime="2015-07-08T08:12:14+08:00" content="2015-07-08">
+              2015-07-08
             </time>
           </span>
 
@@ -387,9 +492,9 @@
 
       
         
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>前几天介绍了JSONP为何物，今天我们就要用JSONP来做一下百度搜索功能，废话不说，先上个图过过瘾。<br>
+          <p>观察者模式定义了一种一对多的依赖关系，又称为订阅发布模式，及可以对某个主题对象进行订阅多个行为，然后在某个时机进行发布。如果从代码角度来说，就是将一些方法给存储起来，然后什么时候想执行就拿出来执行下。如下，通过原型设计了观察者模式的代码：<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/03/26/JSONP模拟百度搜索功能/#more" rel="contents">
+            <a class="btn" href="/2015/07/08/观察者模式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -440,8 +545,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/25/Code_JSONP/" itemprop="url">
-                  JSONP的请求封装方法
+                <a class="post-title-link" href="/2015/06/08/惰性函数/" itemprop="url">
+                  惰性函数
                 </a>
               
             
@@ -454,8 +559,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-25T21:10:55+08:00" content="2015-03-25">
-              2015-03-25
+            <time itemprop="dateCreated" datetime="2015-06-08T15:12:10+08:00" content="2015-06-08">
+              2015-06-08
             </time>
           </span>
 
@@ -483,9 +588,16 @@
 
       
         
-          <p>封装了JSONP的请求方法，使用方法点击 <a href="#">JSONP模拟百度搜索功能</a> 文章<br>更多的类库源码请到我的github地址： <a href="https://github.com/CanFoo/selfJSLib.git">https://github.com/CanFoo/selfJSLib.git</a> 进行下载。<br>
+          <p>惰性函数表示函数执行的分支只会在函数第一次掉用的时候执行，在第一次调用过程中，该函数会被覆盖为另一个按照合适方式执行的函数，这样任何对原函数的调用就不用再经过执行的分支了。这样做的目的就是提高函数的运行效率，举个例子：<br>我们知道IE6~8不支持XMLHttpRequest()方法，支持ActiveXObject(‘Microsoft.XMLHTTP’)。因此在创造一个AJAX请求，必须写一个兼容方法，如下：</p>
+<pre><code>var getXHR = function(){
+    if(window.XMLHttpRequest) {
+         return new XMLHttpRequest();
+    }
+    return new ActiveXObject(&apos;Microsoft.XMLHTTP&apos;);
+};
+</code></pre>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/03/25/Code_JSONP/#more" rel="contents">
+            <a class="btn" href="/2015/06/08/惰性函数/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -536,8 +648,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/21/跨域和JSONP/" itemprop="url">
-                  跨域与JSONP
+                <a class="post-title-link" href="/2015/05/27/JS处理兼容问题的几种方法/" itemprop="url">
+                  js处理兼容的几种方法
                 </a>
               
             
@@ -550,8 +662,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-21T22:22:05+08:00" content="2015-03-21">
-              2015-03-21
+            <time itemprop="dateCreated" datetime="2015-05-27T13:10:10+08:00" content="2015-05-27">
+              2015-05-27
             </time>
           </span>
 
@@ -579,107 +691,10 @@
 
       
         
-          <h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><ul>
-<li>什么是跨域：在当前页面内，访问的请求与当前宿主域名的基本结构不同（方案、域名、端口），那么这个请求就是跨域请求。</li>
-<li>同源策略：同域策略是浏览器厂商为了安全，强制实施的一种安全限制，简单地理解就是因为JavaScript同源策略的限制，a.com 域名下的js无法操作b.com或是c.a.com域名下的对象。
+          <ul>
+<li><p>使用try、catch来处理兼容<br>  原理:在try中让JS代码执行,如果执行过程中报错了,说明不兼容,我们在catch中用其他的方式来实现我们的兼容处理<br>  前提:不兼容的情况下执行报错才可以<br>  弊端:不管当前的浏览器是否兼容,都要先把try中的代码执行一遍,不兼容在走catch,性能上相对来说浪费一些</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/03/21/跨域和JSONP/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/10/17/Code_Animate/" itemprop="url">
-                  animate类库
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-10-17T21:56:38+08:00" content="2014-10-17">
-              2014-10-17
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>实现animate简单运动的方法。<br>更多的类库源码请到我的github地址： <a href="https://github.com/CanFoo/selfJSLib.git">https://github.com/CanFoo/selfJSLib.git</a> 进行下载。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/17/Code_Animate/#more" rel="contents">
+            <a class="btn" href="/2015/05/27/JS处理兼容问题的几种方法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -713,7 +728,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -754,7 +769,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

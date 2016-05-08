@@ -1,0 +1,737 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Can's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="http
+http是超文本传输协议
+http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）
+http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成
+request和response都包含一个报文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP与AJAX">
+<meta property="og:url" content="http://yoursite.com/2015/04/03/HTTP与AJAX/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="http
+http是超文本传输协议
+http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）
+http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成
+request和response都包含一个报文">
+<meta property="og:updated_time" content="2016-05-08T01:45:57.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP与AJAX">
+<meta name="twitter:description" content="http
+http是超文本传输协议
+http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）
+http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成
+request和response都包含一个报文">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> HTTP与AJAX | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HTTP与AJAX
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-04-03T22:30:13+08:00" content="2015-04-03">
+              2015-04-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><ul>
+<li>http是超文本传输协议</li>
+<li>http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）</li>
+<li>http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成</li>
+<li>request和response都包含一个报文<a id="more"></a>
+<ul>
+<li>报文格式：<ol>
+<li>起始行（http的基本信息）<ul>
+<li>请求的起始行-&gt; 包含http方法，request url，http的版本号</li>
+<li>响应的的起始行-&gt; http的版本号（和请求的版本号的一致）、状态码、状态码描述符</li>
+</ul>
+</li>
+<li>首部（请求头\响应头，用来描述http特征以及负数信息）</li>
+<li>主体（数据的承载，请求或者响应的）</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>http 状态码(描述http的响应状态)</p>
+<ol>
+<li>101 浏览器发送http请求之后，还没收到http响应</li>
+<li>2xx 成功 200–&gt;OK 202–&gt;accepted</li>
+<li>3xx 重定向 301–&gt;永久转移 302–&gt;临时转移 304–&gt;没有改变 not modified 走缓存</li>
+<li>4xx 客户端错误 400–&gt;bad reqeust 401–&gt;未认证 403–&gt;禁止访问 没有权限 404–&gt;未找到</li>
+<li>5xx 500–&gt;服务器内部错误</li>
+</ol>
+</li>
+<li><p>http方法（http请求的）</p>
+<ul>
+<li>GET: 从服务器获取数据<ol>
+<li>没有请求主体，把参数都放到url里面</li>
+<li>十分容易被浏览器缓存（只要数据被浏览器缓存，都是GET方法）</li>
+<li>有大小限制（因为它把参数都放到url里了，而浏览器对url的长度有限制，所以造成GET方法有大小限制）chrome 8k,firefox 7k, IE 2k.</li>
+<li>明文发送，不宜发送私密数据</li>
+</ol>
+</li>
+<li>POST：往服务器发送数据<ol>
+<li>有请求主体</li>
+<li>永远不会被缓存</li>
+<li>没有大小限制</li>
+<li>非明文发送，可以发送私密数据</li>
+</ol>
+</li>
+<li>DELE TE:告诉服务器删除数据<ol>
+<li>特点和GET一模一样</li>
+<li>成功响应码为202（服务器接受了，但不一定操作）</li>
+</ol>
+</li>
+<li>HEAD:告诉服务器只返回响应起始行和响应首部即可，不需要返回响应主体<ol>
+<li>不会被缓存，其他的和GET一模一样</li>
+<li>没有响应的主体</li>
+<li>应用场景（同步服务器时间、秒杀、获取即将下载文件的信息）</li>
+</ol>
+</li>
+<li>PUT:往服务器推送数据<ol>
+<li>特点和POST一模一样</li>
+<li>成功的形影码为202（服务器接受了，但不一定操作）</li>
+</ol>
+</li>
+<li>OPTIONS:检索服务器都支持哪些http方法。并将结果放到响应首部中，不需要返回响应主体。<ol>
+<li>只是用来检索服务器支持哪些httpf方法</li>
+<li>没有响应主体</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>URL格式：<code>&lt;scheme&gt;://&lt;username&gt;:&lt;password&gt;@&lt;hostname&gt;:&lt;port&gt;&lt;pathname&gt;?&lt;search&gt;#&lt;hash&gt;</code></li>
+<li>URL的方案（标识url通过此方法去请求server）<ul>
+<li>http 默认端口 800</li>
+<li>https 默认端口 443 http+SSL/TSL(非对称加密RSA算法)</li>
+<li>smtp 邮件系统</li>
+<li>ftp 文件传输系统</li>
+<li>file 本地文件，该方法无法执行ajax请求（因为ajax基于http的，http基于网络，而本地硬盘没有网络）</li>
+</ul>
+</li>
+</ul>
+<h2 id="AJAX"><a href="#AJAX" class="headerlink" title="AJAX"></a>AJAX</h2><p>AJAX是一种创建快捷动态网页的技术，可以实现页面的异步加载。</p>
+<ul>
+<li><p>兼容性</p>
+<pre><code>var xhl = XMLHttpRequest(); //兼容chrome、 firefox、 safari、 opera、
+ie7+（但是ie7做得有缺陷，因此IE10以下不用这个方法）
+
+/*IE浏览器*/
+var ieXHR = new ActiveXObject(&apos;Microsoft.XMLHTTP&apos;);
+var eage = new ActiveXbject(&apos;Msxml2.XMLHTTP&apos;);
+var sange = new ActiveXbject(&apos;Msxml3.XMLHTTP&apos;);
+
+/获取AJAX对象兼容方法封装方法/
+var getXHR = (function() {
+    var list = [
+        function() {
+            return new XMLHttpRequest();
+        },
+        function() {
+            return new ActiveXObject(&apos;Microsoft.XMLHTTP&apos;);
+        },
+        function() {
+            return new ActiveXObject(&apos;Msxml2.XMLHTTP&apos;);
+        },
+        function() {
+            return new ActiveXObject(&apos;Msxml3.XMLHTTP&apos;);
+        }]
+    var len = list.length;
+    var xhr = null;
+    while(len--){
+        try {
+            list[len]();
+            xhr = list[len];
+            break;
+        }catch(e) {
+            continue;
+        }
+    }
+    if(xhr != null){
+        return xhr;
+    }
+})();
+</code></pre></li>
+</ul>
+<ul>
+<li><p>AJAX操作步骤</p>
+<pre><code>//1.创建对象
+var xhr = getXHR();
+//2.调用open方法
+/**
+ * 第一个参数：http方法
+ * 第二个参数：url
+ * 第三个参数：是否为异步，默认为true
+ * 第四个参数：username,默认为undefined
+ * 第五个参数：password，默认为undefined
+ */
+xhr.open(&apos;GET&apos;, &apos;&apos;, true);
+
+//3.获取响应
+//xhr.readyState 是一个枚举值（有几个固定值存在）
+/**
+ * 0：UNSET 默认值 表示ajax对象仅仅初始化完成
+ * 1：OPEN 已经执行AJAX对象open方法
+ * 2：HEADERS_RECEIVE 接受到http响应首部
+ * 3：LOADING 正在接受响应主体
+ * 4：DONE 全部完成 http事务完成
+ */
+xhr.onreadystatechange = function() {
+    //验证xhr状态是否完成
+    if(xhr.readyState===4){
+        //验证http响应码是为2xx
+        if(/^2\d{2}$/.test(xhr.status)) {
+            console.log(xhr.responseText); //把响应主体当做字符串显示
+            console.log(xhr.responseXML);  //把响应主体当做XML显示
+            console.log(xhr.response);//直接获取响应主体，不进行转型，有兼容性，IE10+
+        }else {
+            console.log(&quot;something wrong&quot;)
+        }
+    }
+
+}
+
+//4.发起http请求
+/**
+ * 参数类型：string fromdata(H5 表单数据) blob(二进制块) arraybuffer(二进制流)
+ * null undefined
+ * send方法参数会把参数放到什么地方？
+ * 答：会把参数放到请求主体里，因为get系(get, delete, head)没有请求主体，所以参数也无效，
+ * 因此get系请求不需要传参数,如果是post系，则就会把参数原封不动放到请求主体里
+ */
+xhr.send();
+</code></pre></li>
+<li><p>ajax的同步和异步（对应open的第三个参数的true和false）</p>
+<ol>
+<li>同步：ajax操作的http事务完成之后，send方法后面的逻辑才可以执行，因此onchangestatechange必须写在send前边</li>
+<li>异步：不需要等待http事务完成，可以直接执行send方法后面的逻辑</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/26/继承/" rel="next" title="继承">
+                <i class="fa fa-chevron-left"></i> 继承
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/28/正则/" rel="prev" title="正则">
+                正则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-number">1.</span> <span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AJAX"><span class="nav-number">2.</span> <span class="nav-text">AJAX</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

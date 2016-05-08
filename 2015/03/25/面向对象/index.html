@@ -1,0 +1,714 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Can's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="几个面向对象的概念对象：一个泛指，万物皆对象。类：把对象具体的细分。实例：某一个类别中具体的事物。例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象编程">
+<meta property="og:url" content="http://yoursite.com/2015/03/25/面向对象/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="几个面向对象的概念对象：一个泛指，万物皆对象。类：把对象具体的细分。实例：某一个类别中具体的事物。例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有">
+<meta property="og:updated_time" content="2016-05-08T01:44:28.158Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向对象编程">
+<meta name="twitter:description" content="几个面向对象的概念对象：一个泛指，万物皆对象。类：把对象具体的细分。实例：某一个类别中具体的事物。例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 面向对象编程 | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                面向对象编程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-25T13:05:20+08:00" content="2015-03-25">
+              2015-03-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="几个面向对象的概念"><a href="#几个面向对象的概念" class="headerlink" title="几个面向对象的概念"></a>几个面向对象的概念</h2><p>对象：一个泛指，万物皆对象。<br>类：把对象具体的细分。<br>实例：某一个类别中具体的事物。<br>例子：自然界中万物都是对象，想要认知自然界，我们需要把自然界万物按照特征分为不同的类别：人类、动物类、植物类… 每一个人都是人类中的一个实例。<br>面向对象（JavaScript）:把JS分成几个类，然后在每一个类中分别拿出一个具体的实例去学习研究，当这个实例研究清楚后，我们就可以认为当前类的其他实例也拥有这些知识（特点）</p>
+<h2 id="JS面向对象几种模式"><a href="#JS面向对象几种模式" class="headerlink" title="JS面向对象几种模式"></a>JS面向对象几种模式</h2><ul>
+<li><p>单例模式（只能返回一个实例）:1.可以起到分组的作用；2.防止冲突</p>
+<a id="more"></a>
+<pre><code>var name = &quot;danny&quot;;
+var age = 20;
+var name = &quot;&quot;tom&quot;;
+var age = 23;
+/*name与age冲突了*/
+
+/*改为单一模式*/
+/*字面量写法：*/
+var person1={
+    name : &quot;danny&quot;;
+    age: 10;
+}
+var person2={
+    name : &quot;tom&quot;;
+    age : 20;
+}
+/*person1和person2称为命名空间*/
+</code></pre></li>
+</ul>
+<ul>
+<li><p>工厂模式：不用像之前的单例模式一个个的写了，只需要开一个工厂，实现批量化的生产即可；<br>优点：把实现一个功能的代码封装到一个函数中，以后再想实现这个功能，不需要重新的编写这些代码了，只需要执行这个函数即可（类（函数）的封装），低耦合高内聚（减少页中的冗余代码，提高代码的重复利用率）<br>缺点：无法确定对象类型</p>
+<pre><code>function house(size){
+    var object = {};
+    object.color = &quot;red&quot;；
+    object.size = size;
+    return object;
+}
+var house1 = house(100);
+</code></pre></li>
+<li><p>构造函数模式：在工厂模式批量的生产的基础上，我们既要实现批量生产，也要实现品牌的区分(工厂模式都是属于Object类，构造函数属于构造函数类(Array类，String类，自定义类等等))。在JS中我们把品牌的区分叫做“实例识别”。  </p>
+<pre><code>function House(size){
+    var num =100； /*num是构造函数执行的时候，按照普通函数执行创建的一个私有变量，和
+    我们的实例没有必然的联系：能和实例关联在一起的只有this.xxx=xxx，因为this是当前实
+    例，this.xxx=xxx相当于手动给实例增加的属性名*/
+    /*this是浏览器默认创建那个的实例*/
+    this.color=&quot;red&quot;;
+    this.size=size;
+    this.name=function(){console.log(&quot;house&quot;)};
+}
+House(); //直接运算的话就是一个普通函数
+var danny = new House(); //通过new运算符执行这个函数，这个函数就是一个类，即为构造函数
+var danny = new House; //等效于上面语句
+/*
+
+console.log(danny.color);//输出red;
+var tom = new House();
+console.log(tom.name == danny.name); 返回false
+因为每个实例都有自己的私有的属性，
+
+function Fn(){
+
+}
+var f1 = new Fn();
+//类：所有的类都是函数数据类型的 typeof Fn = &quot;function&quot; ,
+//typeof Array = &quot;function&quot; ,typeof Object = &quot;function&quot;
+//实例：所有的实例都是对象数据类型的typeof f1 = &quot;object&quot; 
+
+/*****************************************************/
+/***构造函数return情况***/
+function Fn1(){
+    this.x=10;
+    return 1;
+}
+var fn1 = new Fn1();
+console.log(fn1); //类Fn本身
+
+function Fn2(){
+    this.x=10;
+    return obj{name:&quot;danny&quot;
+    };
+}
+var fn2 = new Fn2();
+console.log(fn2); //obj{name:&quot;danny&quot;};
+
+/*浏览器会在代码执结束把当前实例默认返回，不需要自己写return，但是如果我们写了return,
+将分两种情况处理：
+1）手动返回数据类型值，那么我们返回的结果不能覆盖原有的实例
+2）手动返回的是引用数据类型的值，那么返回的结果会把浏览器默认返回的实例给覆盖掉*/
+</code></pre></li>
+</ul>
+<ul>
+<li><p>原型链模式（依赖于构造函数）：当我们通过“实例.属性”进行操作的时候，首先到实例的私有属性中进行查找，看在私有中是否存在这个属性：</p>
+<ol>
+<li>如果存在的话，我们接下来我们接下来的操作都是自己当前实例私有的;</li>
+<li><p>如果不存在的话，通过实例的<strong>proto</strong>找到所属类的原型上看有没有：</p>
+<ul>
+<li>原型上有：我们接下来操作的都是原型上公有的</li>
+<li>原型上没有：则继续通过原型上的<strong>proto</strong>找到Object.prototype,看基类上是都存在，如果存在的话就用基类的，没有的话就undefined</li>
+</ul>
+</li>
+<li><p>所有的函数数据类型（普通函数、类）都天生自带一个属性：prototype(原型)，这个属性对应的值是一个对象数据类型的值，浏览器会给这个属性中默认开辟一个新的堆内存。</p>
+</li>
+<li>在浏览器默认给这个默认原型属性值上开辟的堆内存在中，有一个天生自带的属性：constructor(构造函数)，它的属性值是当前这个类本身(指向类的本身)。</li>
+<li>每一个对象数据类型（普通的对象、数组、正则、prototype值）都天生自带一个属性：<strong>proto</strong>，这个属性的值指向了当前这个对象所属类的prototype。Object是所有对象数据类型的积累，在它的原型上没有<strong>proto</strong>属性。（注意：IE浏览器中不允许我们使用<strong>proto</strong>这个属性）</li>
+<li>我们构造函数某一个属性值如果是个函数，函数中的this是谁，需要看方法执行’.’之前的是谁</li>
+</ol>
+</li>
+<li><pre><code>function House(){
+    this.color=&quot;red&quot;;
+    this.size=&quot;&quot;;
+}
+House.prototype.name = function(){console.log(&quot;name&quot;)};  
+var danny = new House();
+var tom = new House();
+
+console.log(danny.__proto__.name == danny.name) //返回true
+console.log(danny.__proto__.name == tom.name) //返回true
+console.log(House.prototype.name == danny.name) //返回true
+/*House的prototype属性，即prototype指针指向一个公有区域，其他实例也有一个__proto__属性，
+即__proto__指针也都指向公有区域，这个公有区域就是共享区域。这里的实例为Danny和Tom，所以我
+们可以得到等式：House.prototype=danny.__proto__=tom.__proto__*/
+/************************************************************************/
+
+function House(){
+    this.color=&quot;red&quot;;
+    this.size=&quot;&quot;;
+}
+House.prototype.print = function(){console.log(this.color)};  
+var danny = new House();
+var tom = new House();
+danny.__proto__.print();  //undefined    --1
+danny.print();  //red                    --2
+/*1和2的print中的this分别指的是不同对象，1中print()的this指的是danny.__proto__,2中
+print()指的是danny因为danny.__proto__指的是House的原型（prototype），因为在House的
+原型（prototype）上没有color属性，因此会通过本身的__ptoto__往上级寻找color属性，由于
+所有的对象数据类型都是Object的实例，因此House的原型（prototype的__ptoto__指向Object
+的原型（prototype），又由于Object的原型（prototype）也没有color属性，所有最终输出
+undefined。2中的danny实例中有color属性，因此打印出red*/
+</code></pre></li>
+</ul>
+<ul>
+<li><p>###基于内置类的原型拓展方法，我们需要注意的事项：我们自己的方法名加上特殊的前缀，防止把内置的方法覆盖掉。</p>
+<pre><code>/************************************************************************/
+//原型链在内置内的应用
+//数组重写pop方法
+Array.prototype.pop = function() {
+    this.length--;
+}
+
+//数组增加数组去从方法
+Array.prototype.myUnique = function unique() {
+    //this-&gt;ary 当前要操作的那个数组
+    var obj = {};
+    for (var i = 0; i &lt; this.length; i++) {
+        var cur = this[i];
+        if (obj[cur] == cur) {
+            this[i] = this[this.length - 1];
+            this.length--;
+            i--;
+            continue;
+        }
+        obj[cur] = cur;
+    }
+    obj = null;
+
+    return this;//把去重后的数组返回,这样就可以实现链式写法了
+};
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/23/DOM/" rel="next" title="DOM">
+                <i class="fa fa-chevron-left"></i> DOM
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/25/Code_JSONP/" rel="prev" title="JSONP的请求封装方法">
+                JSONP的请求封装方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个面向对象的概念"><span class="nav-number">1.</span> <span class="nav-text">几个面向对象的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS面向对象几种模式"><span class="nav-number">2.</span> <span class="nav-text">JS面向对象几种模式</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

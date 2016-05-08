@@ -1,0 +1,621 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Can's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="几种数据类型检测的方式
+typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。
+console.log(typeof 1); //Number
+console.log(typeof &amp;quot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据类型检测">
+<meta property="og:url" content="http://yoursite.com/2015/10/20/数据类型检测/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="几种数据类型检测的方式
+typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。
+console.log(typeof 1); //Number
+console.log(typeof &amp;quot">
+<meta property="og:updated_time" content="2016-05-07T12:59:37.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据类型检测">
+<meta name="twitter:description" content="几种数据类型检测的方式
+typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。
+console.log(typeof 1); //Number
+console.log(typeof &amp;quot">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 数据类型检测 | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据类型检测
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-10-20T23:10:55+08:00" content="2015-10-20">
+              2015-10-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="几种数据类型检测的方式"><a href="#几种数据类型检测的方式" class="headerlink" title="几种数据类型检测的方式"></a>几种数据类型检测的方式</h2><ul>
+<li><p>typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。</p>
+<pre><code>console.log(typeof 1); //Number
+console.log(typeof &quot;sss&quot;); //Number
+console.log(typeof true); //Number
+</code></pre><p>  局限性：不能具体的细分是数组还是正则，还是对象中其他的值，因为使用typeof检测数据类型，对于对象数据中的左右的值，最后返回的结果都是”object”</p>
+<pre><code>console.log(typeof null); // &quot;object&quot;
+console.log(typeof [2,3]); // &quot;object&quot;
+console.log(typeof /\d/); // &quot;object&quot;
+</code></pre><a id="more"></a></li>
+<li><p>instanceof：检测一个实例是否属于某个类</p>
+<pre><code>var obj = [12, 23];
+console.log(obj instanceof Array);// true
+console.log(obj instanceof RegExp);// true
+</code></pre><p>  局限性：<br>  1.不能用来检测和处理字面量方式创建出来的基本数据类型值<br>  对于基本数据来说，字面量方式创建出来的结果和实例方式创建出来的结果是有一定区别的，从严格意义上来讲，只有实例创造出来的结果才是标准对象数据类型，也是标准的Number这个类的一个实例；对于字面量创造出来的结果是基本的数据类型，不是严谨的实例，但是由于JS的松散特点</p>
+<pre><code>console.log(1 instanceof Number); //false
+console.log(new Number(1) instanceof Number); //true
+console.log(&quot;ss&quot; instanceof String); //false
+console.log(new String(&quot;ss&quot;) instanceof String); //true
+console.log(true instanceof RegEXP); //false
+</code></pre><p>  2.instance的特性：只要在当前实例的原型链上，我们用其检测出来的结果都是true</p>
+<pre><code>var ary = [];
+console.log(ary instanceof Array); //true
+console.log(ary instanceof Object); //true
+</code></pre><p>  因此在类的原型继承中，我们最后检测出来的结果未必准确</p>
+<pre><code>function Fn() {
+
+}
+var ary = new Array;
+Fn.prototype = ary;//原型继承:让子类的原型等于父类的一个实例
+var f = new Fn;//f-&gt;Fn.prototype-&gt;Array.prototype-&gt;Object.prototype
+console.log(f instanceof Array);//true
+</code></pre><p>  注意：对于特出的数据类型null和undefined,它们的所属类是Null和Undefined，但是浏览器把这两个保护起来，不允许我们在外面访问使用。</p>
+<pre><code>undefined instanceof Undefined; //报错
+null instanceof Null; //报错
+</code></pre></li>
+<li><p>constructor：作用和instaceof非常相似<br>  var obj = [];</p>
+<pre><code>console.log(obj.constructor === Array); //true
+console.log(obj.constructor === RegExp); //false
+</code></pre><p>  constructor可以处理基本数据类型</p>
+<pre><code>console.log((1).constructor === Number); //true
+</code></pre><p>  constructor检测Object和instanceof不一样，一般情况下检测不了</p>
+<pre><code>console.log((1).constructor === Number); //true
+console.log((1).constructor === Object); //false
+</code></pre><p>  局限性：我们可以把类的原型进行重写，在重写的过程中很有可能出现把之前的constructor给覆盖了，这样检测出来的结果就不准确</p>
+<pre><code>function Fn() { }
+Fn.prototype = new Array;
+var fn = new Fn;
+console.log(fn.constructor); //Array
+</code></pre></li>
+<li><p>Object.prototype.toString().call：首先获取原型上的toString方法，让方法执行，并且改变方法中this关键字的指向（所有数据类型都有toString方法）</p>
+<pre><code>console.log(Object.prototype.toString.call([]));//-&gt;&quot;[object Array]&quot;
+console.log(Object.prototype.toString.call(/^$/));//-&gt;&quot;[object RegExp]&quot;
+console.log(({}).toString.call(new Date));//-&gt;&quot;[object Date]&quot;
+console.log(Object.prototype.toString.call(1));//-&gt;&quot;[object Number]&quot;
+console.log(Object.prototype.toString.call(&quot;hello&quot;));//-&gt;&quot;[object String]&quot;
+console.log(Object.prototype.toString.call(true));//-&gt;&quot;[object Boolean]&quot;
+console.log(Object.prototype.toString.call(null));//-&gt;&quot;[object Null]&quot;
+console.log(Object.prototype.toString.call(undefined));//-&gt;&quot;[object Undefined]&quot;
+console.log(Object.prototype.toString.call(function() {}));//-&gt;&quot;[object Function]&quot;
+</code></pre><p>   由上可见，采用这种方法检测数据类型是比较准确，例如：我们可以这样检测一个Array的数据类型。</p>
+<pre><code>var ary = [];
+console.log(Object.prototype.toString.call(ary) === &quot;[object Array]&quot;);//-&gt;true
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/26/gulp构建工具/" rel="next" title="gulp构建工具">
+                <i class="fa fa-chevron-left"></i> gulp构建工具
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几种数据类型检测的方式"><span class="nav-number">1.</span> <span class="nav-text">几种数据类型检测的方式</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

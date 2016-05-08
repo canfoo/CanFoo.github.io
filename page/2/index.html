@@ -241,308 +241,7 @@
             
               
                 
-                <a class="post-title-link" href="/2014/10/15/Code_DOM/" itemprop="url">
-                  DOM操作类库
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-10-15T20:30:13+08:00" content="2014-10-15">
-              2014-10-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>仿照jQuery封装了一些简单DOM操作的方法。<br>更多的类库源码请到我的github地址： <a href="https://github.com/CanFoo/selfJSLib.git">https://github.com/CanFoo/selfJSLib.git</a> 进行下载。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/15/Code_DOM/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/10/03/HTTP与AJAX/" itemprop="url">
-                  HTTP与AJAX
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-10-03T22:30:13+08:00" content="2014-10-03">
-              2014-10-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><ul>
-<li>http是超文本传输协议</li>
-<li>http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）</li>
-<li>http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成</li>
-<li>request和response都包含一个报文
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/03/HTTP与AJAX/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/10/01/数据类型检测/" itemprop="url">
-                  数据类型检测
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-10-01T23:10:12+08:00" content="2014-10-01">
-              2014-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="数据类型检测几种方法"><a href="#数据类型检测几种方法" class="headerlink" title="数据类型检测几种方法"></a>数据类型检测几种方法</h2><ul>
-<li><p>typeof：用来检测数据类型的运算符,使用typeof检测数据类型，首先返回的都是一个字符串，其次字符串中包含了对应的数据类型(“number”, “string”, “boolean”, “undefined”, “function”, “object”)。</p>
-<pre><code>console.log(typeof 1); //Number
-console.log(typeof &quot;sss&quot;); //Number
-console.log(typeof true); //Number
-</code></pre><p>  局限性：不能具体的细分是数组还是正则，还是对象中其他的值，因为使用typeof检测数据类型，对于对象数据中的左右的值，最后返回的结果都是”object”</p>
-<pre><code>console.log(typeof null); // &quot;object&quot;
-console.log(typeof [2,3]); // &quot;object&quot;
-console.log(typeof /\d/); // &quot;object&quot;
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/01/数据类型检测/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/28/正则/" itemprop="url">
+                <a class="post-title-link" href="/2015/04/28/正则/" itemprop="url">
                   正则
                 </a>
               
@@ -556,8 +255,8 @@ console.log(typeof /\d/); // &quot;object&quot;
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-28T23:10:12+08:00" content="2014-09-28">
-              2014-09-28
+            <time itemprop="dateCreated" datetime="2015-04-28T23:10:12+08:00" content="2015-04-28">
+              2015-04-28
             </time>
           </span>
 
@@ -591,7 +290,7 @@ console.log(typeof /\d/); // &quot;object&quot;
 <ol>
 <li>具有特殊意义的元字符<br> \d -&gt; 匹配一个0-9的数字,相当于[0-9],和它相反的是\D -&gt;匹配一个除0-9的任意字符<br> \w -&gt; 匹配一个0-9、a-z、A-Z、<em>的数字或字符,相当于[0-9a-zA-Z</em>]<br> \s -&gt; 匹配一个空白字符(空格、制表符…)<br> \b -&gt; 匹配一个单词的边界<br> \t -&gt; 匹配一个制表符<br> \n -&gt; 匹配一个换行<br> . -&gt; 匹配一个除了\r\n以外的任意字符<br> ^ -&gt; 以某一个元字符开头<br> $ -&gt; 以某一个元字符结尾<br> \ -&gt; 转义字符<br> x|y -&gt; x或者y的一个<br> [xyz] -&gt; x、y、z中的任意一个<br> [^xyz] -&gt; 除了xyz中的任意一个字符<br> [a-z] -&gt; 匹配a-z中的任意一个字符<br> [^a-z] -&gt; 匹配除了a-z中的任意一个字符<br> () -&gt; 正则中的分组
           <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/28/正则/#more" rel="contents">
+            <a class="btn" href="/2015/04/28/正则/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -642,7 +341,107 @@ console.log(typeof /\d/); // &quot;object&quot;
             
               
                 
-                <a class="post-title-link" href="/2014/09/26/继承/" itemprop="url">
+                <a class="post-title-link" href="/2015/04/03/HTTP与AJAX/" itemprop="url">
+                  HTTP与AJAX
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-04-03T22:30:13+08:00" content="2015-04-03">
+              2015-04-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><ul>
+<li>http是超文本传输协议</li>
+<li>http是一个事务（事务是有n+1的事件组成，只有所有的事件完成之后，这个事务才算完成）</li>
+<li>http包含requrst、response两个事件，当两个事件完成之后，这个http才算完成</li>
+<li>request和response都包含一个报文
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/04/03/HTTP与AJAX/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/26/继承/" itemprop="url">
                   继承
                 </a>
               
@@ -656,8 +455,8 @@ console.log(typeof /\d/); // &quot;object&quot;
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-26T22:55:12+08:00" content="2014-09-26">
-              2014-09-26
+            <time itemprop="dateCreated" datetime="2015-03-26T22:55:12+08:00" content="2015-03-26">
+              2015-03-26
             </time>
           </span>
 
@@ -709,7 +508,199 @@ b.__proto__.bb=function(){} //写在B.prototype上的
 b.__proto__.__proto__.cc=function(){} //写在A.prototype上的
 </code></pre>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/26/继承/#more" rel="contents">
+            <a class="btn" href="/2015/03/26/继承/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/26/JSONP模拟百度搜索功能/" itemprop="url">
+                  JSONP模拟百度搜索栏功能
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-26T21:10:55+08:00" content="2015-03-26">
+              2015-03-26
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>前几天介绍了JSONP为何物，今天我们就要用JSONP来做一下百度搜索功能，废话不说，先上个图过过瘾。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/03/26/JSONP模拟百度搜索功能/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/25/Code_JSONP/" itemprop="url">
+                  JSONP的请求封装方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-25T21:10:55+08:00" content="2015-03-25">
+              2015-03-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>封装了JSONP的请求方法，使用方法点击 <a href="#">JSONP模拟百度搜索功能</a> 文章<br>更多的类库源码请到我的github地址： <a href="https://github.com/CanFoo/selfJSLib.git">https://github.com/CanFoo/selfJSLib.git</a> 进行下载。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/03/25/Code_JSONP/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -743,7 +734,7 @@ b.__proto__.__proto__.cc=function(){} //写在A.prototype上的
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -784,7 +775,7 @@ b.__proto__.__proto__.cc=function(){} //写在A.prototype上的
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -1,0 +1,910 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Can's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="仿照jQuery封装了一些简单DOM操作的方法。更多的类库源码请到我的github地址： https://github.com/CanFoo/selfJSLib.git 进行下载。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOM操作类库">
+<meta property="og:url" content="http://yoursite.com/2015/01/15/Code_DOM/index.html">
+<meta property="og:site_name" content="Can's blog">
+<meta property="og:description" content="仿照jQuery封装了一些简单DOM操作的方法。更多的类库源码请到我的github地址： https://github.com/CanFoo/selfJSLib.git 进行下载。">
+<meta property="og:updated_time" content="2016-05-08T00:33:49.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DOM操作类库">
+<meta name="twitter:description" content="仿照jQuery封装了一些简单DOM操作的方法。更多的类库源码请到我的github地址： https://github.com/CanFoo/selfJSLib.git 进行下载。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> DOM操作类库 | Can's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Can's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                DOM操作类库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-01-15T20:30:13+08:00" content="2015-01-15">
+              2015-01-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>仿照jQuery封装了一些简单DOM操作的方法。<br>更多的类库源码请到我的github地址： <a href="https://github.com/CanFoo/selfJSLib.git" target="_blank" rel="external">https://github.com/CanFoo/selfJSLib.git</a> 进行下载。<br><a id="more"></a></p>
+<pre><code>var DOM = (function () {
+    var flag = &quot;getComputedStyle&quot; in window;
+
+    /**
+     * 将类数组转换为数组
+     * @param likeAry : 类数组
+     * @returns {Array}
+     */
+    function listToArray(likeAry) {
+        if (flag) {
+            return Array.prototype.slice.call(likeAry, 0);
+        }
+        var ary = [];
+        for (var i = 0; i &lt; likeAry.length; i++) {
+            ary[ary.length] = likeAry[i];
+        }
+        return ary;
+    }
+
+    /**
+     * 获取所有的元素子节点
+     * @param curEle : 元素节点
+     * @param tagName : 指定的标签名
+     * @returns {Array}
+     */
+    function children(curEle, tagName) {
+        var ary = [];
+        if (!flag) {
+            var nodeList = curEle.childNodes;
+            for (var i = 0, len = nodeList.length; i &lt; len; i++) {
+                var curNode = nodeList[i];
+                curNode.nodeType === 1 ? ary[ary.length] = curNode : null;
+            }
+            nodeList = null;
+        } else {
+            ary = this.listToArray(curEle.children);
+        }
+        if (typeof tagName === &quot;string&quot;) {
+            for (var k = 0; k &lt; ary.length; k++) {
+                var curEleNode = ary[k];
+                if (curEleNode.nodeName.toLowerCase() !== tagName.toLowerCase()) {
+                    ary.splice(k, 1);
+                    k--;
+                }
+            }
+        }
+        return ary;
+    }
+
+    /**
+     * 获取上一个哥哥元素节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function prev(curEle) {
+        if (flag) {
+            return curEle.previousElementSibling;
+        }
+        var pre = curEle.previousSibling;
+        while (pre &amp;&amp; pre.nodeType !== 1) {
+            pre = pre.previousSibling;
+        }
+        return pre;
+    }
+
+    /**
+     * 获取下一个弟弟元素节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function next(curEle) {
+        if (flag) {
+            return curEle.nextElementSibling;
+        }
+        var nex = curEle.nextSibling;
+        while (nex &amp;&amp; nex.nodeType !== 1) {
+            nex = nex.nextSibling;
+        }
+        return nex;
+    }
+
+    /**
+     * 获取所有的哥哥元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function prevAll(curEle) {
+        var ary = [];
+        var pre = this.prev(curEle);
+        while (pre) {
+            ary.unshift(pre);
+            pre = this.prev(pre);
+        }
+        return ary;
+    }
+
+    /**
+     * 获取所有的弟弟元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function nextAll(curEle) {
+        var ary = [];
+        var nex = this.next(curEle);
+        while (nex) {
+            ary.push(nex);
+            nex = this.next(nex);
+        }
+        return ary;
+    }
+
+    /**
+     * 获取相邻的两个元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function sibling(curEle) {
+        var pre = this.prev(curEle);
+        var nex = this.next(curEle);
+        var ary = [];
+        pre ? ary.push(pre) : null;
+        nex ? ary.push(nex) : null;
+        return ary;
+    }
+
+    /**
+     * 获取所有的兄弟元素节点
+     * @param curEle : 元素节点
+     * @returns {Array or null}
+     */
+    function siblings(curEle) {
+        return this.prevAll(curEle).concat(this.nextAll(curEle));
+    }
+
+    /**
+     * 获取当前元素在当前容器中的索引
+     * @param curEle
+     * @returns {Number}
+     */
+    function index(curEle) {
+        return this.prevAll(curEle).length;
+    }
+
+    /**
+     * 获取当前元素下的第一个元素子节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function firstChild(curEle) {
+        var chs = this.children(curEle);
+        return chs.length &gt; 0 ? chs[0] : null;
+    }
+
+    /**
+     * 获取最后一个元素子节点
+     * @param curEle : 元素节点
+     * @returns {ele or null}
+     */
+    function lastChild(curEle) {
+        var chs = this.children(curEle);
+        return chs.length &gt; 0 ? chs[chs.length - 1] : null;
+    }
+
+    /**
+     * 向指定容器的末尾追加元素
+     * @param newEle : 要添加的元素
+     * @param container : 指定的容器
+     */
+    function append(newEle, container) {
+        container.appendChild(newEle);
+    }
+
+    /**
+     * 向指定容器的开头追加元素
+     * @param newEle : 要添加的元素
+     * @param container : 指定的容器
+     */
+    function prepend(newEle, container) {
+        var fir = this.firstChild(container);
+        if (fir) {
+            container.insertBefore(newEle, fir);
+            return;
+        }
+        container.appendChild(newEle);
+    }
+
+    /**
+     * 把新元素(newEle)追加到指定元素(oldEle)的前面
+     * @param newEle : 新元素
+     * @param oldEle : 当前元素
+     */
+    function insertBefore(newEle, oldEle) {
+        oldEle.parentNode.insertBefore(newEle, oldEle);
+    }
+
+    /**
+     * 把新元素(newEle)追加到指定元素(oldEle)的后面
+     * @param newEle : 新元素
+     * @param oldEle : 当前元素
+     */
+    function insertAfter(newEle, oldEle) {
+        var nex = this.next(oldEle);
+        if (nex) {
+            oldEle.parentNode.insertBefore(newEle, nex);
+            return;
+        }
+        oldEle.parentNode.appendChild(newEle);
+    }
+
+    /**
+     * 验证当前元素中是否包含className这个样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     * @returns {boolean}
+     */
+    function hasClass(curEle, className) {
+        var reg = new RegExp(&quot;(^| +)&quot; + className + &quot;( +|$)&quot;);
+        return reg.test(curEle.className);
+    }
+
+    /**
+     * 给元素增加样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     */
+    function addClass(curEle, className) {
+        var ary = className.replace(/(^ +| +$)/g, &quot;&quot;).split(/ +/g);
+        for (var i = 0, len = ary.length; i &lt; len; i++) {
+            var curName = ary[i];
+            if (!this.hasClass(curEle, curName)) {
+                curEle.className += &quot; &quot; + curName;
+            }
+        }
+    }
+
+    /**
+     * 给元素移除样式类名
+     * @param curEle : 元素
+     * @param className : 类名
+     */
+    function removeClass(curEle, className) {
+        var ary = className.replace(/(^ +| +$)/g, &quot;&quot;).split(/ +/g);
+        for (var i = 0, len = ary.length; i &lt; len; i++) {
+            var curName = ary[i];
+            if (this.hasClass(curEle, curName)) {
+                var reg = new RegExp(&quot;(^| +)&quot; + curName + &quot;( +|$)&quot;, &quot;g&quot;);
+                curEle.className = curEle.className.replace(reg, &quot; &quot;);
+            }
+        }
+    }
+
+    /**
+     * 通过元素的样式类名获取一组元素集合
+     * @param strClass : 类名
+     * @param context : 上下文
+     * @returns {Array or null}
+     */
+    function getElementsByClass(strClass, context) {
+        context = context || document;
+        if (flag) {
+            return this.listToArray(context.getElementsByClassName(strClass));
+        }
+        //-&gt;IE6~8
+        var ary = [], strClassAry = strClass.replace(/(^ +| +$)/g, &quot;&quot;).split(/ +/g);
+        var nodeList = context.getElementsByTagName(&quot;*&quot;);
+        for (var i = 0, len = nodeList.length; i &lt; len; i++) {
+            var curNode = nodeList[i];
+            var isOk = true;
+            for (var k = 0; k &lt; strClassAry.length; k++) {
+                var reg = new RegExp(&quot;(^| +)&quot; + strClassAry[k] + &quot;( +|$)&quot;);
+                if (!reg.test(curNode.className)) {
+                    isOk = false;
+                    break;
+                }
+            }
+            if (isOk) {
+                ary[ary.length] = curNode;
+            }
+        }
+        return ary;
+    }
+
+    /**
+     * 获取元素的样式值
+     * @param attr : 样式
+     * @returns {*}
+     */
+    function getCss(attr) {
+        var val = null, reg = null;
+        if (flag) {
+            val = window.getComputedStyle(this, null)[attr];
+        } else {
+            if (attr === &quot;opacity&quot;) {
+                val = this.currentStyle[&quot;filter&quot;];
+                reg = /^alpha\(opacity=(\d+(?:\.\d+)?)\)$/;
+                val = reg.test(val) ? reg.exec(val)[1] / 100 : 1;
+            } else {
+                val = this.currentStyle[attr];
+            }
+        }
+        reg = /^(-?\d+(\.\d+)?)(px|pt|em|rem)?$/;
+        return reg.test(val) ? parseFloat(val) : val;
+    }
+
+    /**
+     * 给当前元素的某一个样式属性设置值
+     * @param attr : 样式
+     * @returns {*}
+     */
+    function setCss(attr, value) {
+        if (attr === &quot;float&quot;) {
+            this[&quot;style&quot;][&quot;cssFloat&quot;] = value;
+            this[&quot;style&quot;][&quot;styleFloat&quot;] = value;
+            return;
+        }
+        if (attr === &quot;opacity&quot;) {
+            this[&quot;style&quot;][&quot;opacity&quot;] = value;
+            this[&quot;style&quot;][&quot;filter&quot;] = &quot;alpha(opacity=&quot; + value * 100 + &quot;)&quot;;
+            return;
+        }
+        var reg = /^(width|height|top|bottom|left|right|((margin|padding)(Top|Bottom|Left|Right)?))$/;
+        if (reg.test(attr)) {
+            if (!isNaN(value)) {
+                value += &quot;px&quot;;
+            }
+        }
+        this[&quot;style&quot;][attr] = value;
+    }
+
+    /**
+     * 给当前元素批量的设置样式属性值
+     * @param options : 对象集合
+     */
+    function setGroupCss(options) {
+        for (var key in options) {
+            if (options.hasOwnProperty(key)) {
+                setCss.call(this, key, options[key]);
+            }
+        }
+    }
+
+    return {
+        children: children,
+        prev: prev,
+        next: next,
+        prevAll: prevAll,
+        nextAll: nextAll,
+        sibling: sibling,
+        siblings: siblings,
+        index: index,
+        firstChild: firstChild,
+        lastChild: lastChild,
+        append: append,
+        prepend: prepend,
+        insertBefore: insertBefore,
+        insertAfter: insertAfter,
+        hasClass: hasClass,
+        addClass: addClass,
+        removeClass: removeClass,
+        getElementsByClass: getElementsByClass,
+    }
+})();
+</code></pre>
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/17/Code_Animate/" rel="prev" title="animate类库">
+                animate类库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Can" />
+          <p class="site-author-name" itemprop="name">Can</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Can</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
